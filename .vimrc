@@ -7,8 +7,16 @@ let $LOCALHOME = substitute($HOME, "\\", "/", "g")
 let $HOME=g:activevimdir
 
 execute "set runtimepath^=".expand('<sfile>:p:h')."/.vim"
-execute "set runtimepath+=".expand('<sfile>:p:h')."/.vim/after"
-execute "set runtimepath^=".expand('<sfile>:p:h')."/.vim/bundle/vundle"
+execute "set runtimepath^=".expand('<sfile>:p:h')."/vim"
+execute "set runtimepath+=".expand('<sfile>:p:h')."/vim/after"
+
+if !isdirectory($LOCALHOME."/vim")
+    call mkdir($LOCALHOME."/vim", "p")
+endif
+
+if !isdirectory($LOCALHOME."/vim/after")
+    call mkdir($LOCALHOME."/vim/after", "p")
+endif
 
 if !isdirectory($LOCALHOME."/.vim/doc")
     call mkdir($LOCALHOME."/.vim/doc", "p")
@@ -50,19 +58,12 @@ function! DefinePlugins ()
 
     Plugin 'abra/vim-abra'
 
-    " Files
+    "" Files
     Plugin 'scrooloose/nerdtree'
     Plugin 'jistr/vim-nerdtree-tabs'
 
-    " Snippets
-    Plugin 'MarcWeber/vim-addon-mw-utils'
-    Plugin 'tomtom/tlib_vim'
-    Plugin 'garbas/vim-snipmate'
-    Plugin 'honza/vim-snippets'
 
-    Plugin 'https://github.com/ervandew/supertab.git'
-
-    " Utility
+    "" Utility
     Plugin 'tpope/vim-fugitive'
     Plugin 'vim-scripts/searchfold.vim'
     Plugin 'Lokaltog/vim-easymotion'
@@ -115,12 +116,23 @@ function! DefinePlugins ()
 
     Plugin 'szw/vim-ctrlspace'
 
+
+    " Snippets
+    Plugin 'MarcWeber/vim-addon-mw-utils'
+    Plugin 'vim-scripts/tlib'
+    Plugin 'garbas/vim-snipmate'
+    Plugin 'honza/vim-snippets'
+
+    Plugin 'https://github.com/ervandew/supertab.git'
+
+    " Own stuff
+    Plugin 'schwarze/schwarze-vim-snippets'
+
     "execute pathogen#infect($HOME."/.vim/bundle-manual/{}")
 
     call vundle#end()
 
     filetype plugin indent on     " and turn it back on!
-
 
     runtime macros/matchit.vim
 endfunction
@@ -255,6 +267,7 @@ let g:scratch_height = 20
 let g:HighlightCurrentWordToggled = 0
 let &listchars = "tab:\u00bb ,trail:\u00b7,eol:\u0020,extends:\u0020,precedes:\u0020,nbsp:\u00b7"
 
+set spelllang=en_us
 set cryptmethod=blowfish
 set tabline=
 set guicursor+=a:blinkon0
@@ -370,6 +383,10 @@ nmap €m? <Plug>MarkSearchAnyPrev
 nmap €m* <Plug>MarkSearchCurrentNext
 nmap €m# <Plug>MarkSearchCurrentPrev
 
+nmap <silent> zs :setlocal spell!<CR>
+nmap <silent> zn ]s
+nmap <silent> zp [s
+
 " Shortcut keys
 inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
 inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
@@ -382,7 +399,7 @@ smap <C-S-Tab> <Plug>snipMateShow
 " easymotion
 let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz1234567890'
 let g:EasyMotion_smartcase = 1
-let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
+let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 let g:EasyMotion_prompt = '{n}>>> '
 let g:EasyMotion_landing_highlight = 1
 
@@ -402,7 +419,7 @@ map 0s <Plug>(easymotion-s2)
 
 "nnoremap <silent> <C-p> :CtrlPMixed<CR>
 " Schlepp
-let g:Schlepp#dupTrimWS = 1
+let  g:Schlepp#dupTrimWS = 1
 vmap <silent> <C-S-up>    <Plug>SchleppUp
 vmap <silent> <C-S-down>  <Plug>SchleppDown
 vmap <silent> <C-S-left>  <Plug>SchleppLeft
@@ -563,6 +580,7 @@ endif
 
 
 nnoremap <silent> <expr> <leader>z MyToggleFoldExpr()
+nnoremap <silent> <leader>Z zR
 nnoremap <silent> <expr> <leader>fa ToggleAutoread()
 nmap <silent> <kminus> :update<CR>
 nmap <silent> <kplus> :browse tabe<CR>
@@ -603,16 +621,28 @@ xnoremap # :call StarRange__keepReg()<CR>gv"*y?\V<C-R>=StarRange__substituteSpec
 nnoremap <silent> <leader>+ :SearchList<CR>
 nnoremap <silent> <leader># :SearchListLast<CR>
 vnoremap <silent> <leader>+ :SearchListVisual<CR>
+nnoremap <leader>/ :SearchListLast<CR>
 nnoremap <S-Space>/ :SearchListLast<CR>
-nnoremap <leader>s :Subvert/
+nnoremap <leader>& :%Subvert/
 nnoremap <S-Space>& :%Subvert/
-nnoremap <S-Space>S :%Subvert/
 nnoremap g+ g*
 
+"GIT stuff
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gu :Gpull<CR>
+nnoremap <leader>gp :Gpush<CR>
+nnoremap <leader>gf :Gfetch<CR>
+nnoremap <leader>gg :Ggrep<CR>
+nnoremap <leader>gl :Glog<CR>
+nnoremap <leader>gr :Gread<CR>
+nnoremap <leader>gw :Gwrite<CR>
+nnoremap <leader>gb :Gblame<CR>
 
-"nmap <S-space> <space>
-"vmap <S-space> <space>
-nnoremap <silent> z<Space> za
+nnoremap <leader>s :SnipEdit<CR>
+
+nnoremap <silent> z<Space> zA
+vnoremap <silent> z<Space> zf
 
 noremap <silent> <BS><BS> mZ
 vnoremap <silent> <BS><BS> mZ
@@ -784,7 +814,9 @@ nnoremap <silent> <leader><down> :tnext<CR>
 
 "** PLUGIN Mappings ******************************************
 nmap <Leader>m <Plug>MarkSet
+vmap <Leader>m <Plug>MarkSet
 nmap <Leader>M <Plug>MarkAllClear
+vmap <Leader>M <Plug>MarkAllClear
 
 nmap <silent> <expr> t1 SetIndent(1)
 nmap <silent> <expr> t2 SetIndent(2)
@@ -826,6 +858,7 @@ let g:multi_cursor_quit_key='<Esc>'
 let g:multi_cursor_exit_from_insert_mode=0
 let g:multi_cursor_exit_from_visual_mode=0
 
+nnoremap <C-f> :MultipleCursorsFind<space>
 
 let g:DrChipTopLvlMenu = "Plugin."
 
@@ -990,6 +1023,8 @@ com! -complete=command SearchListLast :exec 'lvim // %'|lopen
 com! -range -complete=command SearchListVisual :exe("norm <C-u>") | let save_reg = @z | exec 'norm gv"zy' | exec 'lvim /\V'.@z.'/ %' | let @z = save_reg | lopen
 com! -range -nargs=+ -com=command    B  sil <line1>,<line2>call VisBlockCmd(<q-args>)
 com! -range -nargs=* -com=expression S  sil <line1>,<line2>call VisBlockSearch(<q-args>)
+com! -complete=command SnipEdit :exec 'sp ' . $LOCALHOME . '/.vim/bundle/schwarze-vim-snippets/snippets/' . (&ft==''?'_':&ft) . '.snippets'
+
 
 " from abolish
 cabbrev a Subvert
@@ -1569,10 +1604,10 @@ function! s:InstallPlugins()
     :Fullscreen
 endfunction
 
+
 if has("autocmd")
     augroup vimrcEx
         au!
-        "au CursorHold,CursorHoldI * exec '2match CursorLineNr /\V\<'. escape(GetCurrentWord(), '\/') .'\>/'
         au CursorHold * exec '2match CursorLineNr /\V\<'. escape(GetCurrentWord(), '\/') .'\>/'
         au GUIEnter * set vb t_vb=
         au CmdwinEnter * nnoremap <silent> <Esc> :q<CR>|redraw
@@ -1580,11 +1615,11 @@ if has("autocmd")
         au BufEnter * set cpoptions+=y fo=qr
         au BufNewFile __Scratch__ call s:ScratchMarkBuffer()
         au BufWritePost .vimrc source %
+        au BufWritePost .snippets call ReloadSnippets(&ft)
         au VIMEnter * call s:InstallPlugins()
     augroup END
 else
     set smartindent
 endif
 
-
-
+filetype plugin indent on     " and turn it back on!
