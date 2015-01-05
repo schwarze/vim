@@ -631,7 +631,7 @@ nnoremap g+ g*
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit<CR>
 nnoremap <leader>gu :Gpull<CR>
-nnoremap <leader>gp :Gpush<CR>
+nnoremap <leader>gp :Git push<CR>
 nnoremap <leader>gf :Gfetch<CR>
 nnoremap <leader>gg :Ggrep<CR>
 nnoremap <leader>gl :Glog<CR>
