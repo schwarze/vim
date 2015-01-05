@@ -255,6 +255,7 @@ let g:scratch_height = 20
 let g:HighlightCurrentWordToggled = 0
 let &listchars = "tab:\u00bb ,trail:\u00b7,eol:\u0020,extends:\u0020,precedes:\u0020,nbsp:\u00b7"
 
+set cryptmethod=blowfish
 set tabline=
 set guicursor+=a:blinkon0
 set autoread
@@ -462,9 +463,9 @@ nnoremap <silent> <expr> <leader>l ToggleLineNumber()
 nnoremap <silent> <leader>n :ScratchToggle<CR>
 nnoremap <silent> <leader>b :tabe<CR>
 nnoremap <silent> <leader>B :bw<CR>
-nnoremap <silent> <S-space>B :bw<CR>
+nnoremap <silent> <S-Space>B :bw<CR>
 nmap <silent> <Leader>i <Plug>IndentGuidesToggle
-nnoremap <silent> <S-space><S-space>B :Bdelete<CR>
+nnoremap <silent> <S-Space><S-Space>B :Bdelete<CR>
 nnoremap <silent> <leader><RETURN> :update<CR>
 nnoremap <silent> <leader>- :NERDTreeToggle<CR>
 nnoremap <silent> <leader>_ :NERDTreeFind<CR>
