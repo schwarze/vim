@@ -17,4 +17,4 @@ OS X:
 Windows:
 - cd %HOME%
 - git clone https://github.com/schwarze/vim.git .\vim
-- linkd vim\.vimrc .vimrc
+- mklink .vimrc vim\.vimrc
