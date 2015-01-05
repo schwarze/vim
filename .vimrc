@@ -992,7 +992,10 @@ com! -range -nargs=+ -com=command    B  sil <line1>,<line2>call VisBlockCmd(<q-a
 com! -range -nargs=* -com=expression S  sil <line1>,<line2>call VisBlockSearch(<q-args>)
 
 " from abolish
+cabbrev a Subvert
 cabbrev A Subvert
+cabbrev loop for a in range(10) <bar> put =printf('%d', a) <bar> endfor
+cabbrev L for a in range(10) <bar> put =printf('%d', a) <bar> endfor
 
 function! SetIndent(idnt)
     exe "set tabstop=".a:idnt
@@ -1582,3 +1585,6 @@ if has("autocmd")
 else
     set smartindent
 endif
+
+
+
