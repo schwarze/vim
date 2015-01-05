@@ -1,13 +1,13 @@
 vim
 ===
-Portable, self-installing vim configuration
+Portable vim configuration w/ self-installing plugins
 
 Needed:
 - git
 - ctags (optional)
 
 Install:
-========
+==
 
 OS X:
 - cd ~
