@@ -6,7 +6,7 @@ Needed:
 - git
 - ctags (optional)
 
-Install:
+Install
 ==
 
 OS X:
