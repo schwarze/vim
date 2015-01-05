@@ -100,14 +100,14 @@ function! DefinePlugins ()
     Plugin 'VisIncr'
     Plugin 'vim-scripts/ingo-library'
     Plugin 'vim-scripts/PatternsOnText'
-    Plugin 'junegunn/vim-easy-align'
+    Plugin 'godlygeek/tabular'
     Plugin 'vim-scripts/NumUtils'
     Plugin 'moll/vim-bbye'
     Plugin 'joeytwiddle/sexy_scroller.vim'
     Plugin 'chrisbra/Recover.vim'
-
     Plugin 'majutsushi/tagbar'
 
+    " CTRLP
     Plugin 'kien/ctrlp.vim'
     Plugin 'tacahiroy/ctrlp-funky'
     Plugin 'mattn/ctrlp-register'
@@ -550,6 +550,14 @@ if has('gui_macvim')
     noremap! <D-#> <bar>
     noremap! <D-lt> <bar>
     noremap! <D-+> ~
+    vnoremap <D-7> {
+    vnoremap <D-8> [
+    vnoremap <D-9> ]
+    vnoremap <D-0> }
+    vnoremap <D-ß> \
+    vnoremap <D-#> <bar>
+    vnoremap <D-lt> <bar>
+    vnoremap <D-+> ~
     lnoremap <D-7> {
     lnoremap <D-8> [
     lnoremap <D-9> ]
@@ -728,8 +736,14 @@ nnoremap <silent> <C-k0> viw"*pb
 vnoremap <silent> <C-k0> "*p
 inoremap <silent> <C-k0> <ESC>viw"*pbi
 
-vmap <leader>a <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
+"vmap <leader>a <Plug>(EasyAlign)
+"nmap ga <Plug>(EasyAlign)
+nmap <leader>a :Tabularize /
+vmap <leader>a :Tabularize /
+nmap <S-Space>A= :Tabularize /=<CR>
+vmap <S-Space>A= :Tabularize /=<CR>
+nmap <S-Space>A: :Tabularize /:<CR>
+vmap <S-Space>A: :Tabularize /:<CR>
 
 nnoremap <silent> <M-+> @@
 vnoremap <silent> <M-q> :norm @@<CR>
@@ -817,6 +831,8 @@ nmap <Leader>m <Plug>MarkSet
 vmap <Leader>m <Plug>MarkSet
 nmap <Leader>M <Plug>MarkAllClear
 vmap <Leader>M <Plug>MarkAllClear
+nmap <S-Space>M <Plug>MarkAllClear
+vmap <S-Space>M <Plug>MarkAllClear
 
 nmap <silent> <expr> t1 SetIndent(1)
 nmap <silent> <expr> t2 SetIndent(2)
@@ -871,9 +887,6 @@ cmap <C-S-space> <Plug>CmdlineCompletionBackward
 cmap <C-RETURN> <C-R><C-W>
 cmap <S-RETURN> <C-R><C-W>
 
-nnoremap <leader>/ :call FilteringNew().addToParameter('alt', @/).run()<CR>
-
-
 "======[ Order-preserving uniqueness ]=========================
 
 " Normalize the whitespace in a string...
@@ -914,9 +927,9 @@ vmap  Q :call Uniq('ignore whitespace')<CR>
 "***********************************************************
 
 function! GetCurrentWord()
-    let c = col ('.')
-    let l = line('.')
-    let ll = getline(l)
+    let c   = col ('.')
+    let l   = line('.')
+    let ll  = getline(l)
     let ll1 = strpart(ll,0,c)
     let ll1 = matchstr(ll1,'\w*$')
     if strlen(ll1) == 0
@@ -1569,7 +1582,7 @@ fun! s:RestoreUserSettings()
 endfun
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! s:InstallPlugins()
+function! s:FinalizeStartup()
     if !g:IsVundleInstalled
         echo "Installing package manager via GIT..."
         hi clear NonText
@@ -1601,6 +1614,18 @@ function! s:InstallPlugins()
     hi link IncSearch StatusLine
     hi clear MatchParen
     hi link MatchParen CursorLineNr
+    hi clear SignColor
+    hi link SignColor CursorLine
+    hi clear SignColumn
+    hi link SignColumn CursorLine
+
+    hi def MarkWord1  ctermbg=Cyan     ctermfg=Black  guibg=#8CCBEA    guifg=Black
+    hi def MarkWord2  ctermbg=Green    ctermfg=Black  guibg=#A4E57E    guifg=Black
+    hi def MarkWord3  ctermbg=Yellow   ctermfg=Black  guibg=#FFDB72    guifg=Black
+    hi def MarkWord4  ctermbg=Red      ctermfg=Black  guibg=#FF7272    guifg=Black
+    hi def MarkWord5  ctermbg=Magenta  ctermfg=Black  guibg=#FFB3FF    guifg=Black
+    hi def MarkWord6  ctermbg=Blue     ctermfg=Black  guibg=#9999FF    guifg=Black
+
     :Fullscreen
 endfunction
 
@@ -1616,10 +1641,8 @@ if has("autocmd")
         au BufNewFile __Scratch__ call s:ScratchMarkBuffer()
         au BufWritePost .vimrc source %
         au BufWritePost .snippets call ReloadSnippets(&ft)
-        au VIMEnter * call s:InstallPlugins()
+        au VIMEnter * call s:FinalizeStartup()
     augroup END
 else
     set smartindent
 endif
-
-filetype plugin indent on     " and turn it back on!
