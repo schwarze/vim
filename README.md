@@ -4,7 +4,10 @@ Portable vim configuration w/ self-installing plugins
 
 Needed:
 - git
-- ctags (optional)
+
+Optional:
+- ctags (http://sourceforge.net/projects/ctags/files/)
+
 
 Install
 ==
@@ -15,6 +18,6 @@ OS X:
 - ln -s vim/.vimrc .vimrc
 
 Windows:
-- cd %HOME%
+- cd %HOMEPATH%
 - git clone https://github.com/schwarze/vim.git .\vim
-- mklink .vimrc vim\.vimrc
+- mklink /H .vimrc vim\.vimrc
