@@ -6,9 +6,11 @@ let g:activevimdir=fnamemodify($MYVIMRC, ":p:h")
 let $LOCALHOME = substitute($HOME, "\\", "/", "g")
 let $HOME=g:activevimdir
 
+
 execute "set runtimepath^=".expand('<sfile>:p:h')."/.vim"
 execute "set runtimepath^=".expand('<sfile>:p:h')."/vim"
-execute "set runtimepath+=".expand('<sfile>:p:h')."/vim/after"
+execute "set runtimepath^=".expand('<sfile>:p:h')."/vim/bin"
+execute "let $PATH.=';".expand('<sfile>:p:h')."/vim/bin'"
 
 if !isdirectory($LOCALHOME."/vim")
     call mkdir($LOCALHOME."/vim", "p")
@@ -365,7 +367,6 @@ set wrap
 set ww=<,>,[,],b,s,~
 
 exe "set viminfo='100,s100,:100,/100,@100,h,rA:,rB:,f1,!,n".$LOCALHOME."/.vimtmp/local/viminfo"
-let &stl="%0* %t %=%{fugitive#statusline()} %8b 0x%-8B#%n%(|%Y%)|%{&encoding}%{\"|\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",BOM\":\"\").\"\"}|%{&fileformat}%(|%R%)%(|%M%)%{(&ar?\"\":\"*\")} %10o %7.(%c%V%) %-20.(%10l/%L%) %4P "
 
 "***************************************
 " yunk maps
@@ -1625,6 +1626,8 @@ function! s:FinalizeStartup()
     hi def MarkWord4  ctermbg=Red      ctermfg=Black  guibg=#FF7272    guifg=Black
     hi def MarkWord5  ctermbg=Magenta  ctermfg=Black  guibg=#FFB3FF    guifg=Black
     hi def MarkWord6  ctermbg=Blue     ctermfg=Black  guibg=#9999FF    guifg=Black
+
+    let &stl="%0* %t %=%{fugitive#statusline()} %8b 0x%-8B#%n%(|%Y%)|%{&encoding}%{\"|\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",BOM\":\"\").\"\"}|%{&fileformat}%(|%R%)%(|%M%)%{(&ar?\"\":\"*\")} %10o %7.(%c%V%) %-20.(%10l/%L%) %4P "
 
     :Fullscreen
 endfunction
