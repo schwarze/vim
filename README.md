@@ -4,6 +4,7 @@ Portable vim configuration w/ self-installing plugins
 
 Needed:
 - git
+  - http://git-scm.com/downloads
 
 Optional:
 - ctags 
