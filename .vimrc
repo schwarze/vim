@@ -108,6 +108,7 @@ function! DefinePlugins ()
     Plugin 'joeytwiddle/sexy_scroller.vim'
     Plugin 'chrisbra/Recover.vim'
     Plugin 'majutsushi/tagbar'
+    Plugin 'luochen1990/rainbow'
 
     " CTRLP
     Plugin 'kien/ctrlp.vim'
@@ -260,6 +261,10 @@ let g:ctrlspace_use_tabline = 1
 let g:tagbar_autofocus = 1
 let g:tagbar_autoclose = 1
 let g:tagbar_compact = 1
+
+let g:rainbow_active = 0
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Parameters
 let g:mapleader=" "
@@ -269,24 +274,15 @@ let g:scratch_height = 20
 let g:HighlightCurrentWordToggled = 0
 let &listchars = "tab:\u00bb ,trail:\u00b7,eol:\u0020,extends:\u0020,precedes:\u0020,nbsp:\u00b7"
 
-set spelllang=en_us
-set cryptmethod=blowfish
-set tabline=
-set guicursor+=a:blinkon0
 set autoread
-set nocursorline
-set wildmenu
-set cpo-=<
-set wcm=<C-Z>
-set noautoindent
-set smartindent
 set backspace=indent,eol,start
 set breakat+=\|
 set browsedir=buffer
-set nocindent
 set cmdheight=2
 set completeopt=menu,longest
 set confirm
+set cpo-=<
+set cryptmethod=blowfish
 set display=lastline,uhex
 set efm+=%f
 set encoding=utf-8
@@ -297,9 +293,8 @@ set fo=qr
 set foldcolumn=1
 set foldmethod=manual
 set gdefault
+set guicursor+=a:blinkon0
 set guioptions=rcAb
-"set guitablabel=%{GuiTabLabel()}
-"set guitabtooltip=%{GuiTabToolTip()}
 set hidden
 set history=500
 set hlsearch
@@ -307,48 +302,52 @@ set ignorecase smartcase
 set incsearch
 set km=startsel
 set laststatus=2
-set list
+set lazyredraw
 set linespace=0
-set mouse=a
+set list
 set modelines=0
-set nomodeline
+set mouse=a
 set mousemodel=extend
 set mouseshape=n:arrow,i:arrow,r:arrow,v:arrow,o:arrow,s:updown,sd:updown,m:no,ml:up-arrow,vs:leftright,vd:leftright
 set noautochdir
+set noautoindent
 set nobackup writebackup
+set nocindent
+set nocursorline
 set noerrorbells
 set nofoldenable
 set nojoinspaces
-set lazyredraw
-set lz
+set nomodeline
 set nomore
 set noruler
+set noshellslash
 set noshowcmd
 set noshowmatch
+set noshowmode
 set nostartofline
 set number
 set printexpr=system('open\ -a\ Preview\ '.v:fname_in)\ +\ v:shell_error
 set printoptions=paper:A4,number:y,syntax:n,duplex:long
 set report=2
 set sessionoptions=buffers,tabpages
-set noshellslash
 set shiftwidth=4
 set shortmess+=aoOtTI
 set showbreak=
-set showmatch
-set noshowmode
 set showtabline=2
 set sidescroll=1
 set sidescrolloff=1
+set smartindent
 set smarttab
 set softtabstop=0
+set spelllang=en_us
 set splitbelow
 set splitright
 set swapfile
 set switchbuf=usetab
+set tabline=
 set tabstop=4
-set tags=tags;
 set tagrelative
+set tags=tags;
 set termencoding=utf-8
 set textwidth=0
 set title titlestring=%{getcwd()}
@@ -361,6 +360,8 @@ set vb t_vb=
 set virtualedit=all
 set visualbell
 set wak=no
+set wcm=<C-Z>
+set wildmenu
 set wildmenu
 set wildmode=full
 set wrap
@@ -384,6 +385,9 @@ nmap €m? <Plug>MarkSearchAnyPrev
 nmap €m* <Plug>MarkSearchCurrentNext
 nmap €m# <Plug>MarkSearchCurrentPrev
 
+nnoremap <k3> <C-U>
+nnoremap <kPoint> <C-D>
+
 nmap <silent> zs :setlocal spell!<CR>
 nmap <silent> zn ]s
 nmap <silent> zp [s
@@ -404,19 +408,9 @@ let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 let g:EasyMotion_prompt = '{n}>>> '
 let g:EasyMotion_landing_highlight = 1
 
-map 0 <Plug>(easymotion-prefix)
-map 00 <Plug>(easymotion-sn)
-omap 00 <Plug>(easymotion-tn)
-map 0l <Plug>(easymotion-lineforward)
-map 0<right> <Plug>(easymotion-lineforward)
-map 0j <Plug>(easymotion-j)
-map 0<down> <Plug>(easymotion-j)
-map 0k <Plug>(easymotion-k)
-map 0<up> <Plug>(easymotion-k)
-map 0h <Plug>(easymotion-linebackward)
-map 0<left> <Plug>(easymotion-linebackward)
-map 0s <Plug>(easymotion-s2)
-
+"map <leader>0 <Plug>(easymotion-prefix)
+map <leader>7 <Plug>(easymotion-sn)
+omap <leader>7 <Plug>(easymotion-tn)
 
 "nnoremap <silent> <C-p> :CtrlPMixed<CR>
 " Schlepp
@@ -620,9 +614,6 @@ vnoremap Ö q/
 nnoremap - "
 nnoremap _ "
 nnoremap + *
-"nnoremap <tab> <C-w>
-"nnoremap <tab><tab> <C-w>w
-"nnoremap <S-tab><S-tab> <C-w>W
 
 xnoremap + :call StarRange__keepReg()<CR>gv"*y/\V<C-R>=StarRange__substituteSpecialChars(@*)<CR><CR>:call StarRange__restoreReg()<CR>:echo<CR>
 xnoremap * :call StarRange__keepReg()<CR>gv"*y/\V<C-R>=StarRange__substituteSpecialChars(@*)<CR><CR>:call StarRange__restoreReg()<CR>:echo<CR>
@@ -649,6 +640,7 @@ nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gb :Gblame<CR>
 
 nnoremap <leader>s :SnipEdit<CR>
+nnoremap <leader>r :RainbowToggle<CR>
 
 nnoremap <silent> z<Space> zA
 vnoremap <silent> z<Space> zf
@@ -691,8 +683,8 @@ nnoremap <silent> <leader><leader>. :Changedir<CR>
 nnoremap <silent> <leader><leader>: :Changedirup<CR>
 nnoremap <silent> <S-Space><S-Space>: :Changedirup<CR>
 
-nnoremap <silent> <C-u> :redo<CR>
-
+nnoremap <silent> <C-u> U
+nnoremap <silent> U :redo<CR>
 
 nnoremap <silent> <M-Left> g;
 nnoremap <silent> <M-Right> g,
@@ -726,16 +718,21 @@ noremap <expr> <End> (col('.') == match(getline('.'), '\s*$') ? '$' : 'g_')
 vnoremap <expr> <End> (col('.') == match(getline('.'), '\s*$') ? '$h' : 'g_')
 imap <Home> <C-o><Home>
 
-nnoremap <silent> <k1> "*yiw
-vnoremap <silent> <k1> "*y
-nnoremap <silent> <C-k1> "*yiw
-vnoremap <silent> <C-k1> "*y
-inoremap <silent> <C-k1> <C-o>"*yiw
-nnoremap <silent> <k0> viw"*pb
-vnoremap <silent> <k0> "*p
-nnoremap <silent> <C-k0> viw"*pb
-vnoremap <silent> <C-k0> "*p
-inoremap <silent> <C-k0> <ESC>viw"*pbi
+nnoremap <silent> <k1> m`"*yiw``
+vnoremap <silent> <k1> m`"*y``
+nnoremap <silent> <C-k1> m`"*yiw``
+vnoremap <silent> <C-k1> m`"*y``
+inoremap <silent> <C-k1> <C-o>m`"*yiw``
+nnoremap <silent> <k2> m`"*yaw``
+vnoremap <silent> <k2> m`"*y``
+nnoremap <silent> <C-k2> m`"*yaw``
+vnoremap <silent> <C-k2> m`"*y``
+inoremap <silent> <C-k2> <C-o>m`"*yaw``
+nnoremap <silent> <k0> m`viw"*pb``
+vnoremap <silent> <k0> m`"*p``
+nnoremap <silent> <C-k0> m`viw"*pb``
+vnoremap <silent> <C-k0> m`"*p``
+inoremap <silent> <C-k0> <ESC>m`viw"*pbi``
 
 "vmap <leader>a <Plug>(EasyAlign)
 "nmap ga <Plug>(EasyAlign)
@@ -1010,7 +1007,6 @@ com! -range=% DDL :<line1>,<line2>g/^\(.*\)\n\_.*\%(^\1$\)/d<bar>exe('nohlsearch
 com! -range=% DBL :<line1>,<line2>g/^\s*$/d<bar>exe('nohlsearch')<bar>exe("norm `'")
 com! -range=% DBE :<line1>,<line2>s/\s\+$//g<bar>exe('nohlsearch')<bar>exe("norm `'")
 com! -range=% CBL :<line1>,<line2>s/^\n\+/\r<bar>exe('nohlsearch')<bar>exe("norm `'")
-"com! -complete=command ReSyntax :if exists("syntax_on") | syntax off | else | syntax enable | syntax sync fromstart | call rainbow#load()| call rainbow#toggle() | endif | redraw
 com! -complete=command ReSyntax :if exists("syntax_on") | syntax off | else | syntax enable | syntax sync fromstart | endif | redraw
 com! -complete=command Changedir :cd %:p:h|pwd
 com! -complete=command ChangedirToTagsfile :exe('cd '.fnamemodify(tagfiles()[0],':p:h'))|pwd
@@ -1585,8 +1581,7 @@ endfun
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:UpdateVimRc()
-    "execute "silent call system('git pull https://github.com/schwarze/vim.git ".$LOCALHOME."/vim')"
-    execute "cd " . $LOCALHOME . "/vim | call system('git pull')"
+    execute "cd " . $LOCALHOME . "/vim | call system('git pull') | e"
 endfunction
 
 function! s:FinalizeStartup()
