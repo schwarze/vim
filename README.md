@@ -6,7 +6,12 @@ Needed:
 - git
 
 Optional:
-- ctags (http://sourceforge.net/projects/ctags/files/)
+- ctags 
+  - Windows:
+    - http://sourceforge.net/projects/ctags/files/
+  - OS X:
+    - ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    - brew install ctags-exuberant
 
 
 Install
