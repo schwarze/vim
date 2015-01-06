@@ -1037,6 +1037,7 @@ com! -range -complete=command SearchListVisual :exe("norm <C-u>") | let save_reg
 com! -range -nargs=+ -com=command    B  sil <line1>,<line2>call VisBlockCmd(<q-args>)
 com! -range -nargs=* -com=expression S  sil <line1>,<line2>call VisBlockSearch(<q-args>)
 com! -complete=command SnipEdit :exec 'sp ' . $LOCALHOME . '/.vim/bundle/schwarze-vim-snippets/snippets/' . (&ft==''?'_':&ft) . '.snippets'
+com! -complete=command UpdateVimRc call s:UpdateVimRc()
 
 
 " from abolish
@@ -1582,6 +1583,11 @@ fun! s:RestoreUserSettings()
 endfun
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:UpdateVimRc()
+    "execute "silent call system('git pull https://github.com/schwarze/vim.git ".$LOCALHOME."/vim')"
+    execute "cd " . $LOCALHOME . "/vim | call system('git pull')"
+endfunction
+
 function! s:FinalizeStartup()
     if !g:IsVundleInstalled
         echo "Installing package manager via GIT..."
