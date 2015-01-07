@@ -81,7 +81,7 @@ function! DefinePlugins ()
     Plugin 'tpope/vim-abolish'
     Plugin 'repeat.vim'
     Plugin 'speeddating.vim'
-    Plugin 'https://github.com/milkypostman/vim-togglelist.git'
+    Plugin 'milkypostman/vim-togglelist'
     Plugin 'terryma/vim-expand-region'
     Plugin 'terryma/vim-multiple-cursors'
     Plugin 'kana/vim-textobj-user'
@@ -109,6 +109,7 @@ function! DefinePlugins ()
     Plugin 'chrisbra/Recover.vim'
     Plugin 'majutsushi/tagbar'
     Plugin 'luochen1990/rainbow'
+    Plugin 'tyru/open-browser.vim'
 
     " CTRLP
     Plugin 'kien/ctrlp.vim'
@@ -126,7 +127,7 @@ function! DefinePlugins ()
     Plugin 'garbas/vim-snipmate'
     Plugin 'honza/vim-snippets'
 
-    Plugin 'https://github.com/ervandew/supertab.git'
+    Plugin 'ervandew/supertab'
 
     " Own stuff
     Plugin 'schwarze/schwarze-vim-snippets'
@@ -642,6 +643,9 @@ nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>s :SnipEdit<CR>
 nnoremap <leader>r :RainbowToggle<CR>
 
+nmap <leader>o <Plug>(openbrowser-search)
+vmap <leader>o <Plug>(openbrowser-search)
+
 nnoremap <silent> z<Space> zA
 vnoremap <silent> z<Space> zf
 
@@ -734,8 +738,6 @@ nnoremap <silent> <C-k0> m`viw"*pb``
 vnoremap <silent> <C-k0> m`"*p``
 inoremap <silent> <C-k0> <ESC>m`viw"*pbi``
 
-"vmap <leader>a <Plug>(EasyAlign)
-"nmap ga <Plug>(EasyAlign)
 nmap <leader>a :Tabularize /
 vmap <leader>a :Tabularize /
 nmap <S-Space>A= :Tabularize /=<CR>
@@ -884,6 +886,9 @@ cmap <C-S-tab> <Plug>CmdlineCompletionBackward
 cmap <C-S-space> <Plug>CmdlineCompletionBackward
 cmap <C-RETURN> <C-R><C-W>
 cmap <S-RETURN> <C-R><C-W>
+cmap <S-Space> %20
+
+nmap <leader>ff :OpenBrowser http://www.patorjk.com/software/taag/#f=Big&t=
 
 "======[ Order-preserving uniqueness ]=========================
 
