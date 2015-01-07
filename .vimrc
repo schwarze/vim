@@ -65,7 +65,7 @@ function! DefinePlugins ()
     Plugin 'jistr/vim-nerdtree-tabs'
 
 
-    "" Utility
+    "Utility
     Plugin 'tpope/vim-fugitive'
     Plugin 'vim-scripts/searchfold.vim'
     Plugin 'Lokaltog/vim-easymotion'
@@ -131,8 +131,6 @@ function! DefinePlugins ()
 
     " Own stuff
     Plugin 'schwarze/schwarze-vim-snippets'
-
-    "execute pathogen#infect($HOME."/.vim/bundle-manual/{}")
 
     call vundle#end()
 
@@ -888,7 +886,8 @@ cmap <C-RETURN> <C-R><C-W>
 cmap <S-RETURN> <C-R><C-W>
 cmap <S-Space> %20
 
-nmap <leader>ff :OpenBrowser http://www.patorjk.com/software/taag/#f=Big&t=
+nnoremap <silent> <leader>ff :Banner<CR>
+":OpenBrowser http://www.patorjk.com/software/taag/#f=Big&t=
 
 "======[ Order-preserving uniqueness ]=========================
 
@@ -1040,7 +1039,7 @@ com! -range -nargs=+ -com=command    B  sil <line1>,<line2>call VisBlockCmd(<q-a
 com! -range -nargs=* -com=expression S  sil <line1>,<line2>call VisBlockSearch(<q-args>)
 com! -complete=command SnipEdit :exec 'sp ' . $LOCALHOME . '/.vim/bundle/schwarze-vim-snippets/snippets/' . (&ft==''?'_':&ft) . '.snippets'
 com! -complete=command UpdateVimRc call s:UpdateVimRc()
-
+com! -complete=command Banner echo 'Fetching banner...' | exec 'silent sp http://ascii-text.com/online-ascii-banner-text-generator/big/' . GetCurrentWord() | exec '%s/^\_.*<pre>\(\_.\{-}\)<\/pre>\_.*$/\1/' | nohlsearch | let save_reg = @z | exec 'norm gg"zyG' | close | exec 'norm diw"zP' | let @z = save_reg
 
 " from abolish
 cabbrev a Subvert
