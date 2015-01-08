@@ -1594,7 +1594,9 @@ endfun
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:UpdateVimRc()
-    execute "cd " . $LOCALHOME . "/vim | call system('git pull') | e"
+    execute "cd " . $LOCALHOME . "/vim"
+    execute "silent call system('git pull')"
+    e
 endfunction
 
 function! s:SetColors()
