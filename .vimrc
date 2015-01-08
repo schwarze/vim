@@ -66,6 +66,7 @@ function! DefinePlugins ()
 
 
     "Utility
+    Plugin 'dkprice/vim-easygrep'
     Plugin 'tpope/vim-fugitive'
     Plugin 'vim-scripts/searchfold.vim'
     Plugin 'Lokaltog/vim-easymotion'
@@ -149,6 +150,7 @@ endif
 " OS specific
 if has('gui_macvim')
     let macvim_skip_cmd_opt_movement = 1
+    set grepprg=grep\ -nR
 elseif has('win32') || has('win64')
     try
         try
@@ -263,6 +265,9 @@ let g:tagbar_compact = 1
 
 let g:rainbow_active = 0
 
+let g:EasyGrepRecursive = 0
+let g:EasyGrepWindow = 1
+let g:EasyGrepFilesToExclude=".git,tags"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Parameters
@@ -800,29 +805,30 @@ inoremap <silent> <C-b> <c-o>dB
 
 nmap <silent> <C-p> :call PasteJointCharacterwise(v:register, "P")<CR>
 
-nmap <leader><leader>h :ReSyntax<CR>
+nmap <leader>h :ReSyntax<CR>
 
 imap <C-e> <C-r>=
 nmap <C-e> i<C-r>=
 vmap <silent> <C-e> s<C-r>=<C-r>-<CR>
 
 
-nnoremap <silent> <expr> <C-t> TagfileCreate()
+nnoremap <silent> <expr> <S-C-t> TagfileCreate()
 
-nnoremap <silent> <leader><leader><up> :lNext<CR>
-nnoremap <silent> <leader><leader><down> :lnext<CR>
-nnoremap <silent> <leader><leader><right> :lopen<CR>
-nnoremap <silent> <leader><C-left> :lclose<CR>
+nnoremap <silent> <leader><leader><up> :cNext<CR>
+nnoremap <silent> <leader><leader><down> :cnext<CR>
+nnoremap <silent> <leader><leader><right> :copen<CR>
+nnoremap <silent> <leader><leader><left> :cclose<CR>
 
+nmap <script> <silent> <leader>q :call ToggleQuickfixList()<CR>
+nmap <script> <silent> <leader>t :call ToggleLocationList()<CR>
 nmap <script> <silent> <leader><leader>+ :call ToggleLocationList()<CR>
 nmap <script> <silent> <leader><leader>- :call ToggleQuickfixList()<CR>
 nmap <script> <silent> <leader><leader># :call ToggleQuickfixList()<CR>
 
-nnoremap <silent> <leader><leader><left> :lclose<CR>
 nnoremap <silent> <leader><right> :ltag <C-R><C-W><CR>
 nnoremap <silent> <leader><left> <C-T>
-nnoremap <silent> <leader><up> :tprevious<CR>
-nnoremap <silent> <leader><down> :tnext<CR>
+nnoremap <silent> <leader><up> :lNext<CR>
+nnoremap <silent> <leader><down> :lnext<CR>
 
 "** PLUGIN Mappings ******************************************
 nmap <Leader>m <Plug>MarkSet
@@ -1011,7 +1017,7 @@ com! -range=% DDL :<line1>,<line2>g/^\(.*\)\n\_.*\%(^\1$\)/d<bar>exe('nohlsearch
 com! -range=% DBL :<line1>,<line2>g/^\s*$/d<bar>exe('nohlsearch')<bar>exe("norm `'")
 com! -range=% DBE :<line1>,<line2>s/\s\+$//g<bar>exe('nohlsearch')<bar>exe("norm `'")
 com! -range=% CBL :<line1>,<line2>s/^\n\+/\r<bar>exe('nohlsearch')<bar>exe("norm `'")
-com! -complete=command ReSyntax :if exists("syntax_on") | syntax off | else | syntax enable | syntax sync fromstart | endif | redraw
+com! -complete=command ReSyntax :if exists("syntax_on") | syntax off | else | call s:SetColors() | endif | redraw
 com! -complete=command Changedir :cd %:p:h|pwd
 com! -complete=command ChangedirToTagsfile :exe('cd '.fnamemodify(tagfiles()[0],':p:h'))|pwd
 com! -complete=command Changedirup :cd ..|pwd
@@ -1046,6 +1052,7 @@ cabbrev a Subvert
 cabbrev A Subvert
 cabbrev loop for a in range(10) <bar> put =printf('%d', a) <bar> endfor
 cabbrev L for a in range(10) <bar> put =printf('%d', a) <bar> endfor
+cabbrev grep silent! lgrep
 
 function! SetIndent(idnt)
     exe "set tabstop=".a:idnt
@@ -1053,7 +1060,9 @@ function! SetIndent(idnt)
 endfunction
 
 function! TagfileCreate()
+    echo "Creating tags file in " . getcwd() . "..."
     silent! execute('!ctags -R')
+    echo "Tags file created"
 endfunction
 
 function! DelNonameBuf()
@@ -1588,25 +1597,10 @@ function! s:UpdateVimRc()
     execute "cd " . $LOCALHOME . "/vim | call system('git pull') | e"
 endfunction
 
-function! s:FinalizeStartup()
-    if !g:IsVundleInstalled
-        echo "Installing package manager via GIT..."
-        hi clear NonText
-        hi NonText guifg=bg
-        execute "silent call system('git clone https://github.com/gmarik/Vundle.vim.git ".$LOCALHOME."/.vim/bundle/Vundle.vim')"
-        call DefinePlugins()
-        echo "Installing plugins via Vundle..."
-        :PluginInstall
-        close
-    else
-        call DefinePlugins()
-    endif
-
-    filetype plugin indent on
-    source $VIMRUNTIME/menu.vim
-
+function! s:SetColors()
     syntax enable
     syntax sync fromstart
+    syntax on
 
     set background=dark
     try
@@ -1631,6 +1625,26 @@ function! s:FinalizeStartup()
     hi def MarkWord4  ctermbg=Red      ctermfg=Black  guibg=#FF7272    guifg=Black
     hi def MarkWord5  ctermbg=Magenta  ctermfg=Black  guibg=#FFB3FF    guifg=Black
     hi def MarkWord6  ctermbg=Blue     ctermfg=Black  guibg=#9999FF    guifg=Black
+endfunction
+
+function! s:FinalizeStartup()
+    if !g:IsVundleInstalled
+        echo "Installing package manager via GIT..."
+        hi clear NonText
+        hi NonText guifg=bg
+        execute "silent call system('git clone https://github.com/gmarik/Vundle.vim.git ".$LOCALHOME."/.vim/bundle/Vundle.vim')"
+        call DefinePlugins()
+        echo "Installing plugins via Vundle..."
+        :PluginInstall
+        close
+    else
+        call DefinePlugins()
+    endif
+
+    filetype plugin indent on
+    source $VIMRUNTIME/menu.vim
+
+    call s:SetColors()
 
     let &stl="%0* %t %=%{fugitive#statusline()} %8b 0x%-8B#%n%(|%Y%)|%{&encoding}%{\"|\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",BOM\":\"\").\"\"}|%{&fileformat}%(|%R%)%(|%M%)%{(&ar?\"\":\"*\")} %10o %7.(%c%V%) %-20.(%10l/%L%) %4P "
 
