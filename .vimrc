@@ -111,6 +111,7 @@ function! DefinePlugins ()
     Plugin 'majutsushi/tagbar'
     Plugin 'luochen1990/rainbow'
     Plugin 'tyru/open-browser.vim'
+    Plugin 'arecarn/crunch.vim'
 
     " CTRLP
     Plugin 'kien/ctrlp.vim'
@@ -388,6 +389,9 @@ nmap €m/ <Plug>MarkSearchAnyNext
 nmap €m? <Plug>MarkSearchAnyPrev
 nmap €m* <Plug>MarkSearchCurrentNext
 nmap €m# <Plug>MarkSearchCurrentPrev
+" crunch
+map €cl <Plug>CrunchEvalLine
+map €cb <Plug>CrunchEvalBlock
 
 nnoremap <k3> <C-U>
 nnoremap <kPoint> <C-D>
@@ -411,6 +415,7 @@ let g:EasyMotion_smartcase = 1
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 let g:EasyMotion_prompt = '{n}>>> '
 let g:EasyMotion_landing_highlight = 1
+
 
 "map <leader>0 <Plug>(easymotion-prefix)
 map <leader>7 <Plug>(easymotion-sn)
@@ -1050,11 +1055,10 @@ com! -complete=command UpdateVimRc call s:UpdateVimRc()
 com! -complete=command Banner echo 'Fetching banner...' | exec 'silent sp http://ascii-text.com/online-ascii-banner-text-generator/big/' . GetCurrentWord() | exec '%s/^\_.*<pre>\(\_.\{-}\)<\/pre>\_.*$/\1/' | nohlsearch | let save_reg = @z | exec 'norm gg"zyG' | close | exec 'norm diw"zP' | let @z = save_reg
 
 " from abolish
-cabbrev a Subvert
-cabbrev A Subvert
-cabbrev loop for a in range(10) <bar> put =printf('%d', a) <bar> endfor
-cabbrev L for a in range(10) <bar> put =printf('%d', a) <bar> endfor
-cabbrev grep silent! lgrep
+"cabbrev a Subvert
+"cabbrev A Subvert
+cabbrev +++l for i in range(1,10) <bar> put =printf('%d', i) <bar> endfor
+"cabbrev grep silent! lgrep
 
 function! SetIndent(idnt)
     exe "set tabstop=".a:idnt
