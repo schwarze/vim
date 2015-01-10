@@ -501,6 +501,8 @@ nnoremap <silent> d<down> ]c
 nnoremap <silent> d<left> :diffget<CR>
 nnoremap <silent> d<right> :diffput<CR>
 
+nnoremap <silent> <expr> <leader>y ToggleVirtualEdit()
+
 nnoremap <silent> <expr> <leader>w ToggleWrap()
 nnoremap <silent> <expr> <leader>ww ToggleWrap()
 
@@ -1193,6 +1195,17 @@ function! ToggleDiffOrig()
         diffthis
         wincmd p
         diffthis
+    endif
+endfunction
+
+
+function! ToggleVirtualEdit()
+    if &virtualedit == ""
+        set virtualedit=all
+        echo "virtualedit on"
+    else
+        set virtualedit=""
+        echo "virtualedit off"
     endif
 endfunction
 
