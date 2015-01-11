@@ -901,6 +901,7 @@ cmap <S-Space> %20
 
 nnoremap <silent> <leader>ff :Banner<CR>
 ":OpenBrowser http://www.patorjk.com/software/taag/#f=Big&t=
+nnoremap <leader>fl :for i in range(1,10) <bar> put =printf('%d', i) <bar> endfor
 
 "======[ Order-preserving uniqueness ]=========================
 
@@ -1053,12 +1054,6 @@ com! -range -nargs=* -com=expression S  sil <line1>,<line2>call VisBlockSearch(<
 com! -complete=command SnipEdit :exec 'sp ' . $LOCALHOME . '/.vim/bundle/schwarze-vim-snippets/snippets/' . (&ft==''?'_':&ft) . '.snippets'
 com! -complete=command UpdateVimRc call s:UpdateVimRc()
 com! -complete=command Banner echo 'Fetching banner...' | exec 'silent sp http://ascii-text.com/online-ascii-banner-text-generator/big/' . GetCurrentWord() | exec '%s/^\_.*<pre>\(\_.\{-}\)<\/pre>\_.*$/\1/' | nohlsearch | let save_reg = @z | exec 'norm gg"zyG' | close | exec 'norm diw"zP' | let @z = save_reg
-
-" from abolish
-"cabbrev a Subvert
-"cabbrev A Subvert
-cabbrev +++l for i in range(1,10) <bar> put =printf('%d', i) <bar> endfor
-"cabbrev grep silent! lgrep
 
 function! SetIndent(idnt)
     exe "set tabstop=".a:idnt
