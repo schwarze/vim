@@ -156,7 +156,7 @@ if has('gui_macvim')
 elseif has('win32') || has('win64')
     try
         try
-            set guifont=lucida_console:h10
+            set guifont=Consolas:h9
         catch
         endtry
         set grepprg=findstr\ /N\ /I\ /S
@@ -657,7 +657,7 @@ nnoremap <leader>r :RainbowToggle<CR>
 nmap <leader>o <Plug>(openbrowser-search)
 vmap <leader>o <Plug>(openbrowser-search)
 
-nnoremap <silent> z<Space> zA
+nnoremap <silent> z<Space> za
 vnoremap <silent> z<Space> zf
 
 noremap <silent> <BS><BS> mZ
@@ -1633,6 +1633,10 @@ function! s:SetColors()
     hi link SignColor CursorLine
     hi clear SignColumn
     hi link SignColumn CursorLine
+    hi clear Folded
+    hi link Folded CursorLine
+    hi clear FoldColumn
+    hi link FoldColumn CursorLine
 
     hi def MarkWord1  ctermbg=Cyan     ctermfg=Black  guibg=#8CCBEA    guifg=Black
     hi def MarkWord2  ctermbg=Green    ctermfg=Black  guibg=#A4E57E    guifg=Black
