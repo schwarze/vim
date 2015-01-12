@@ -1,4 +1,5 @@
 set nocompatible               " be iMproved
+language messages en
 
 filetype off                   " must be off before Vundle has run
 
