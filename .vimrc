@@ -819,7 +819,7 @@ nmap <C-e> i<C-r>=
 vmap <silent> <C-e> s<C-r>=<C-r>-<CR>
 
 
-nnoremap <silent> <expr> <S-C-t> TagfileCreate()
+nnoremap <silent> <expr> T TagfileCreate()
 
 nnoremap <silent> <leader><leader><up> :cNext<CR>
 nnoremap <silent> <leader><leader><down> :cnext<CR>
@@ -833,7 +833,7 @@ nmap <script> <silent> <leader><leader>- :call ToggleQuickfixList()<CR>
 nmap <script> <silent> <leader><leader># :call ToggleQuickfixList()<CR>
 
 nnoremap <silent> <leader><right> :ltag <C-R><C-W><CR>
-nnoremap <silent> <leader><left> <C-T>
+nnoremap <silent> <leader><left> <C-t>
 nnoremap <silent> <leader><up> :lNext<CR>
 nnoremap <silent> <leader><down> :lnext<CR>
 
@@ -1062,7 +1062,7 @@ endfunction
 
 function! TagfileCreate()
     echo "Creating tags file in " . getcwd() . "..."
-    silent! execute('!ctags -R')
+    execute "silent call system('ctags -R')"
     echo "Tags file created"
 endfunction
 
