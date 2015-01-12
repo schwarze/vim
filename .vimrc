@@ -594,8 +594,7 @@ if has('gui_macvim')
 endif
 
 
-nnoremap <silent> <expr> <leader>z MyToggleFoldExpr()
-nnoremap <silent> <leader>Z zR
+nnoremap <silent> <leader>z zfi{
 nnoremap <silent> <expr> <leader>fa ToggleAutoread()
 nmap <silent> <kminus> :update<CR>
 nmap <silent> <kplus> :browse tabe<CR>
@@ -902,7 +901,7 @@ cmap <S-Space> %20
 
 nnoremap <silent> <leader>ff :Banner<CR>
 ":OpenBrowser http://www.patorjk.com/software/taag/#f=Big&t=
-nnoremap <leader>fl :for i in range(1,10) <bar> put =printf('%d', i) <bar> endfor
+nnoremap <leader>fl :for i in range(1,10) <bar> put =printf('%d', i) <bar> endfor<left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left>
 
 "======[ Order-preserving uniqueness ]=========================
 
@@ -1231,29 +1230,6 @@ function! ToggleAutoread()
         setlocal ar
         echo "autoread on"
     endif
-endfunction
-
-
-function! MyToggleFoldExpr()
-    if &foldmethod=="manual"
-        call MyFoldExpr()
-    else
-        call MyUnFoldExpr()
-    endif
-endfunction
-
-
-function! MyFoldExpr()
-    set foldenable
-    set foldmethod=expr
-    set foldexpr=getline(v:lnum)!~@/
-    %foldclose!
-endfunction
-
-
-function! MyUnFoldExpr()
-    %foldopen!
-    set foldmethod=manual
 endfunction
 
 
