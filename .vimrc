@@ -179,6 +179,7 @@ let g:session_autosave = 'no'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " PLUGINS:
 let g:SuperTabDefaultCompletionType = "context"
+let g:searchfold_do_maps = 0
 
 " Windows flicker prevention:
 let g:SexyScroller_MaxTime = 1
@@ -417,6 +418,9 @@ let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 let g:EasyMotion_prompt = '{n}>>> '
 let g:EasyMotion_landing_highlight = 1
 
+nmap z/   <Plug>SearchFoldNormal
+nmap z(  <Plug>SearchFoldInverse
+nmap z)   <Plug>SearchFoldRestore
 
 "map <leader>0 <Plug>(easymotion-prefix)
 map <leader>7 <Plug>(easymotion-sn)
@@ -595,6 +599,8 @@ endif
 
 
 nnoremap <silent> <leader>z zfi{
+nnoremap <silent> <leader>Z zd
+nnoremap <silent> <S-space>Z zD
 nnoremap <silent> <expr> <leader>fa ToggleAutoread()
 nmap <silent> <kminus> :update<CR>
 nmap <silent> <kplus> :browse tabe<CR>
@@ -657,6 +663,9 @@ nmap <leader>o <Plug>(openbrowser-search)
 vmap <leader>o <Plug>(openbrowser-search)
 
 nnoremap <silent> z<Space> za
+nnoremap <silent> Z<Space> zA
+nnoremap <silent> ZR zR
+nnoremap <silent> ZE eR
 vnoremap <silent> z<Space> zf
 
 noremap <silent> <BS><BS> mZ
