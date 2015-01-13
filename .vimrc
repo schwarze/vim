@@ -829,6 +829,14 @@ vmap <silent> <C-e> s<C-r>=<C-r>-<CR>
 
 
 nnoremap <silent> <expr> T TagfileCreate()
+nmap tt :ltag  <bar> lopen<left><left><left><left><left><left><left><left>
+nmap <silent> tn :tnext<CR>
+nmap <silent> tp :tNext<CR>
+nmap <silent> tr :trewind<CR>
+nmap <silent> tf :trewind<CR>
+nmap <silent> tl :tlast<CR>
+nmap <silent> tw :call ToggleLocationList()<CR>
+
 
 nnoremap <silent> <leader><leader><up> :cNext<CR>
 nnoremap <silent> <leader><leader><down> :cnext<CR>
