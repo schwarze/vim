@@ -1,5 +1,5 @@
 set nocompatible               " be iMproved
-language messages en
+language messages C
 
 filetype off                   " must be off before Vundle has run
 
@@ -418,9 +418,9 @@ let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 let g:EasyMotion_prompt = '{n}>>> '
 let g:EasyMotion_landing_highlight = 1
 
-nmap z/   <Plug>SearchFoldNormal
-nmap z(  <Plug>SearchFoldInverse
-nmap z)   <Plug>SearchFoldRestore
+nmap z/ <Plug>SearchFoldNormal
+nmap z( <Plug>SearchFoldInverse
+nmap z) <Plug>SearchFoldRestore
 
 "map <leader>0 <Plug>(easymotion-prefix)
 map <leader>7 <Plug>(easymotion-sn)
@@ -1590,7 +1590,6 @@ endfun
 function! s:UpdateVimRc()
     execute "cd " . $LOCALHOME . "/vim"
     execute "silent call system('git pull')"
-    e
 endfunction
 
 function! s:SetColors()
