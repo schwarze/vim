@@ -354,7 +354,7 @@ set switchbuf=usetab
 set tabline=
 set tabstop=4
 set tagrelative
-set tags=tags;
+set tags=./**/tags,tags,tags;
 set termencoding=utf-8
 set textwidth=0
 set title titlestring=%{getcwd()}
