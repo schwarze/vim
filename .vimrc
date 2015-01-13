@@ -485,7 +485,7 @@ map! <silent> <C-F6> }
 nnoremap <silent> <F11> :Fullscreen<CR>
 
 nnoremap <silent> <leader><BS> :emenu <C-Z>
-nnoremap <silent> <expr> <leader>l ToggleLineNumber()
+nnoremap <silent> <leader>l :set relativenumber!<CR>
 nnoremap <silent> <leader>n :ScratchToggle<CR>
 nnoremap <silent> <leader>b :tabe<CR>
 nnoremap <silent> <leader>B :bw<CR>
@@ -1162,18 +1162,6 @@ endfunction
 
 
 "************************************************************
-
-
-function! ToggleLineNumber()
-    if &rnu
-        setlocal nornu
-        setlocal number
-    else
-        setlocal nonumber
-        setlocal rnu
-    endif
-endfunction
-
 
 function! ToggleDiff()
     if &diff
