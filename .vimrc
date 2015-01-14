@@ -340,7 +340,7 @@ set sessionoptions=buffers,tabpages
 set shiftwidth=4
 set shortmess+=aoOtTI
 set showbreak=
-set showtabline=2
+set showtabline=0
 set sidescroll=1
 set sidescrolloff=1
 set smartindent
@@ -395,6 +395,7 @@ nmap €m# <Plug>MarkSearchCurrentPrev
 map €cl <Plug>CrunchEvalLine
 map €cb <Plug>CrunchEvalBlock
 
+imap <S-Del> <C-o>dd
 nnoremap <k3> <C-U>
 nnoremap <kPoint> <C-D>
 
@@ -735,6 +736,9 @@ noremap <M-end> g$
 inoremap <M-home> <c-o>g0
 inoremap <M-end> <c-o>g$
 nnoremap <C-y> ggVG
+nnoremap <k4> ggVG
+nnoremap <C-k4> ggVG
+inoremap <C-k4> <C-o>ggVG
 
 noremap <expr> <Home> (col('.') == matchend(getline('.'), '^\s*')+1 ? '0' : '^')
 noremap <expr> <End> (col('.') == match(getline('.'), '\s*$') ? '$' : 'g_')
@@ -1617,6 +1621,8 @@ function! s:SetColors()
     hi link Folded CursorLine
     hi clear FoldColumn
     hi link FoldColumn CursorLine
+    hi clear User1
+    hi link User1 CursorLine
 
     hi def MarkWord1  ctermbg=Cyan     ctermfg=Black  guibg=#8CCBEA    guifg=Black
     hi def MarkWord2  ctermbg=Green    ctermfg=Black  guibg=#A4E57E    guifg=Black
@@ -1645,7 +1651,7 @@ function! s:FinalizeStartup()
 
     call s:SetColors()
 
-    let &stl="%0* %t %=%{fugitive#statusline()} %8b 0x%-8B#%n%(|%Y%)|%{&encoding}%{\"|\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",BOM\":\"\").\"\"}|%{&fileformat}%(|%R%)%(|%M%)%{(&ar?\"\":\"*\")} %10o %7.(%c%V%) %-20.(%10l/%L%) %4P "
+    let &stl="%1* %{ctrlspace#statusline_tab_segment()} %0* %t %=%{fugitive#statusline()} %8b 0x%-8B#%n%(|%Y%)|%{&encoding}%{\"|\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",BOM\":\"\").\"\"}|%{&fileformat}%(|%R%)%(|%M%)%{(&ar?\"\":\"*\")} %10o %7.(%c%V%) %-20.(%10l/%L%) %1* %4P "
 
     :Fullscreen
 endfunction
