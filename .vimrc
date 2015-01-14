@@ -430,19 +430,15 @@ omap <leader>7 <Plug>(easymotion-tn)
 "nnoremap <silent> <C-p> :CtrlPMixed<CR>
 " Schlepp
 let  g:Schlepp#dupTrimWS = 1
-vmap <silent> <C-S-up>    <Plug>SchleppUp
-vmap <silent> <C-S-down>  <Plug>SchleppDown
-vmap <silent> <C-S-left>  <Plug>SchleppLeft
+vmap <silent> <C-S-up> <Plug>SchleppUp
+vmap <silent> <C-S-down> <Plug>SchleppDown
+vmap <silent> <C-S-left> <Plug>SchleppLeft
 vmap <silent> <C-S-right> <Plug>SchleppRight
-vmap <silent> <C-S-d> <Plug>SchleppDup
-vmap <silent> <C-S-d><C-S-up> <Plug>SchleppDupUp
-vmap <silent> <C-S-d><C-S-down> <Plug>SchleppDupDown
-vmap <silent> <C-S-d><C-S-left> <Plug>SchleppDupLeft
-vmap <silent> <C-S-d><C-S-right> <Plug>SchleppDupRight
-vmap <silent> <C-S-d><up> <Plug>SchleppDupUp
-vmap <silent> <C-S-d><down> <Plug>SchleppDupDown
-vmap <silent> <C-S-d><left> <Plug>SchleppDupLeft
-vmap <silent> <C-S-d><right> <Plug>SchleppDupRight
+vmap <silent> <C-s> <Plug>SchleppDup
+vmap <silent> <C-S-M-up> <Plug>SchleppDupUp
+vmap <silent> <C-S-M-down> <Plug>SchleppDupDown
+vmap <silent> <C-S-M-left> <Plug>SchleppDupLeft
+vmap <silent> <C-S-M-right> <Plug>SchleppDupRight
 
 nnoremap <silent> <C-S-Space> :CtrlPMixed<CR>
 nnoremap <silent> <leader>p :CtrlPMenu<CR>
@@ -462,7 +458,7 @@ nnoremap <silent><M-PageDown> :CtrlSpaceGoNext<CR>
 inoremap <silent><M-PageDown> :CtrlSpaceGoNext<CR>
 nnoremap <silent><M-PageUp> :CtrlSpaceGoPrevious<CR>
 inoremap <silent><M-PageUp> :CtrlSpaceGoPrevious<CR>
-nnoremap <silent><C-N>   :CtrlSpaceTabLabel<CR>
+nnoremap <silent><C-N> :CtrlSpaceTabLabel<CR>
 
 vnoremap / :S<SPACE>
 vnoremap . :B<SPACE>
@@ -858,13 +854,13 @@ nnoremap <silent> <leader><left> <C-t>
 nnoremap <silent> <leader><up> :lNext<CR>
 nnoremap <silent> <leader><down> :lnext<CR>
 
-"** PLUGIN Mappings ******************************************
-nmap <Leader>m <Plug>MarkSet
-vmap <Leader>m <Plug>MarkSet
-nmap <Leader>M <Plug>MarkAllClear
-vmap <Leader>M <Plug>MarkAllClear
-nmap <S-Space>M <Plug>MarkAllClear
-vmap <S-Space>M <Plug>MarkAllClear
+"** plugin mappings ******************************************
+nmap <leader>m <plug>MarkSet
+vmap <leader>m <plug>MarkSet
+nmap <leader>M <plug>MarkAllClear
+vmap <leader>M <plug>MarkAllClear
+nmap <s-space>M <plug>MarkAllClear
+vmap <s-space>M <plug>MarkAllClear
 
 nmap <silent> <expr> t1 SetIndent(1)
 nmap <silent> <expr> t2 SetIndent(2)
