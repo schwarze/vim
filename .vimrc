@@ -644,7 +644,7 @@ nnoremap g+ g*
 
 "GIT stuff
 nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gc :silent Gcommit<CR>
+nnoremap <leader>gc :silent! Gcommit<CR>
 nnoremap <leader>gu :Gpull<CR>
 nnoremap <leader>gp :Git push<CR>
 nnoremap <leader>gf :Gfetch<CR>
