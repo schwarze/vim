@@ -7,7 +7,6 @@ let g:activevimdir=fnamemodify($MYVIMRC, ":p:h")
 let $LOCALHOME = substitute($HOME, "\\", "/", "g")
 let $HOME=g:activevimdir
 
-
 execute "set runtimepath^=".expand('<sfile>:p:h')."/.vim"
 execute "set runtimepath^=".expand('<sfile>:p:h')."/vim"
 execute "set runtimepath^=".expand('<sfile>:p:h')."/vim/bin"
@@ -47,6 +46,8 @@ execute "set undodir=".$LOCALHOME."/.vimtmp/undo//"
 let g:netrw_home=$LOCALHOME ."/.vimtmp/local"
 
 set runtimepath+=~/.vim/bundle/Vundle.vim
+
+cd $LOCALHOME
 
 if exists('+undofile')
     set undofile
@@ -652,6 +653,7 @@ nnoremap <leader>gl :Glog<CR>
 nnoremap <leader>gr :Gread<CR>
 nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gd :Gdiff<CR>
 
 nnoremap <leader>s :SnipEdit<CR>
 nnoremap <leader>r :RainbowToggle<CR>
