@@ -176,6 +176,7 @@ let g:SessionFileSuffix = ""
 let g:changes_autocmd=0
 let g:session_autosave = 'no'
 
+let s:cwhl=0 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " PLUGINS:
@@ -644,7 +645,7 @@ nnoremap g+ g*
 
 "GIT stuff
 nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gc :silent! Gcommit<CR>
+nnoremap <leader>gc :Gcommit<CR>
 nnoremap <leader>gu :Gpull<CR>
 nnoremap <leader>gp :Git push<CR>
 nnoremap <leader>gf :Gfetch<CR>
@@ -804,8 +805,8 @@ nnoremap <silent> <M-7> q/i
 nnoremap <silent> <M--> q/i
 nnoremap <silent> <M-.> q:i
 nnoremap <silent> <char-0x221e> q:i
-nnoremap <silent> <C-bs> `z
-nnoremap <silent> <C-return> mz
+"nnoremap <silent> <C-bs> `z
+"nnoremap <silent> <C-return> mz
 nnoremap <silent> <S-return> `.
 inoremap <silent> <S-return> <C-O>`.
 nnoremap <silent> <S-bs> `.
@@ -921,6 +922,8 @@ cmap <S-Space> %20
 nnoremap <silent> <leader>ff :Banner<CR>
 ":OpenBrowser http://www.patorjk.com/software/taag/#f=Big&t=
 nnoremap <leader>fl :for i in range(1,10) <bar> put =printf('%d', i) <bar> endfor<left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left>
+
+nnoremap <C-return> :call ToggleCurrentWordHL()<CR>
 
 "======[ Order-preserving uniqueness ]=========================
 
@@ -1236,6 +1239,16 @@ function! ToggleAutoread()
     else
         setlocal ar
         echo "autoread on"
+    endif
+endfunction
+
+function! ToggleCurrentWordHL()
+    if s:cwhl
+        2match none
+        let s:cwhl=0
+    else
+        exec '2match User2 /\V\<'. escape(GetCurrentWord(), '\/') .'\>/'
+        let s:cwhl=1
     endif
 endfunction
 
@@ -1621,6 +1634,8 @@ function! s:SetColors()
     hi link FoldColumn CursorLine
     hi clear User1
     hi link User1 CursorLine
+    hi clear User2
+    hi User2 guifg=Red gui=NONE
 
     hi def MarkWord1  ctermbg=Cyan     ctermfg=Black  guibg=#8CCBEA    guifg=Black
     hi def MarkWord2  ctermbg=Green    ctermfg=Black  guibg=#A4E57E    guifg=Black
@@ -1658,7 +1673,7 @@ endfunction
 if has("autocmd")
     augroup vimrcEx
         au!
-        au CursorHold * exec '2match CursorLineNr /\V\<'. escape(GetCurrentWord(), '\/') .'\>/'
+        "au CursorHold * exec '2match CursorLineNr /\V\<'. escape(GetCurrentWord(), '\/') .'\>/'
         au GUIEnter * set vb t_vb=
         au CmdwinEnter * nnoremap <silent> <Esc> :q<CR>|redraw
         au CmdwinLeave * nunmap <Esc>
