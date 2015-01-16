@@ -643,17 +643,17 @@ nnoremap <S-Space>& :%Subvert/
 nnoremap g+ g*
 
 "GIT stuff
-nnoremap <silent> <leader>gs :Gstatus<CR>
-nnoremap <silent> <leader>gc :Gcommit<CR>
-nnoremap <silent> <leader>gu :Gpull<CR>
-nnoremap <silent> <leader>gp :Git push<CR>
-nnoremap <silent> <leader>gf :Gfetch<CR>
-nnoremap <silent> <leader>gg :Ggrep<CR>
-nnoremap <silent> <leader>gl :Glog<CR>
-nnoremap <silent> <leader>gr :Gread<CR>
-nnoremap <silent> <leader>gw :Gwrite<CR>
-nnoremap <silent> <leader>gb :Gblame<CR>
-nnoremap <silent> <leader>gd :Gdiff<CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :silent Gcommit<CR>
+nnoremap <leader>gu :Gpull<CR>
+nnoremap <leader>gp :Git push<CR>
+nnoremap <leader>gf :Gfetch<CR>
+nnoremap <leader>gg :Ggrep<CR>
+nnoremap <leader>gl :Glog<CR>
+nnoremap <leader>gr :Gread<CR>
+nnoremap <leader>gw :Gwrite<CR>
+nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gd :Gdiff<CR>
 
 nnoremap <leader>s :SnipEdit<CR>
 nnoremap <leader>r :RainbowToggle<CR>
