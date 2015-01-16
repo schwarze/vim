@@ -47,7 +47,7 @@ let g:netrw_home=$LOCALHOME ."/.vimtmp/local"
 
 set runtimepath+=~/.vim/bundle/Vundle.vim
 
-cd $LOCALHOME
+cd $TEMP
 
 if exists('+undofile')
     set undofile
@@ -301,17 +301,17 @@ set fo=qr
 set foldcolumn=1
 set foldmethod=manual
 set gdefault
-set guicursor+=a:blinkon0
+"set guicursor+=a:blinkon0
 set guioptions=rcAb
 set hidden
-set history=500
+set history=100
 set hlsearch
 set ignorecase smartcase
 set incsearch
 set km=startsel
 set laststatus=2
-set lazyredraw
-set linespace=0
+set nolazyredraw
+"set linespace=0
 set list
 set modelines=0
 set mouse=a
@@ -362,10 +362,10 @@ set title titlestring=%{getcwd()}
 set titlelen=0
 set ttyfast
 set ttyscroll=3
-set undolevels=5000
-set updatetime=100
+set undolevels=1000
+set updatetime=500
 set vb t_vb=
-set virtualedit=all
+set virtualedit=block
 set visualbell
 set wak=no
 set wcm=<C-Z>
@@ -1207,7 +1207,7 @@ endfunction
 
 function! ToggleVirtualEdit()
     if &virtualedit == ""
-        set virtualedit=all
+        set virtualedit=block
         echo "virtualedit on"
     else
         set virtualedit=""
