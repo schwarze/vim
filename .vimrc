@@ -74,7 +74,7 @@ function! DefinePlugins ()
     "" Files
     Plugin 'scrooloose/nerdtree'
     Plugin 'jistr/vim-nerdtree-tabs'
-
+    Plugin 'rking/ag.vim'
 
     "Utility
     Plugin 'dkprice/vim-easygrep'
@@ -201,6 +201,7 @@ let g:SexyScroller_EasingStyle = 0
 let g:SexyScroller_DetectPendingKeys = 0
 
 " CTRLP
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let g:ctrlp_cache_dir = $LOCALHOME."/.vimtmp/ctrlpcache"
 let g:ctrlp_clear_cache_on_exit = 1
 let g:ctrlp_max_files = 100
