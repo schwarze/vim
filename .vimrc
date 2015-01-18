@@ -673,7 +673,7 @@ nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gd :Gdiff<CR>
 
 nnoremap <S-space>R vip:RengBangConfirm<CR>
-vnoremap <S-space>R :RengBangConfirm<CR>
+vnoremap <S-space>R :B RengBangConfirm<CR>
 nnoremap <leader>s :SnipEdit<CR>
 nnoremap <leader>r :RainbowToggle<CR>
 
@@ -1089,8 +1089,8 @@ com! -nargs=0 Fullscreen :winpos 0 0|set lines=999|set columns=999
 com! -complete=command SearchList :exec 'lvim /\V\<'. escape(GetCurrentWord(), '\/') .'\>/ %'|lopen
 com! -complete=command SearchListLast :exec 'lvim // %'|lopen
 com! -range -complete=command SearchListVisual :exe("norm <C-u>") | let save_reg = @z | exec 'norm gv"zy' | exec 'lvim /\V'.@z.'/ %' | let @z = save_reg | lopen
-com! -range -nargs=+ -com=command    B  sil <line1>,<line2>call VisBlockCmd(<q-args>)
-com! -range -nargs=* -com=expression S  sil <line1>,<line2>call VisBlockSearch(<q-args>)
+com! -range -nargs=+ -com=command    B  <line1>,<line2>call VisBlockCmd(<q-args>)
+com! -range -nargs=* -com=expression S  <line1>,<line2>call VisBlockSearch(<q-args>)
 com! -complete=command SnipEdit :exec 'sp ' . $LOCALHOME . '/.vim/bundle/schwarze-vim-snippets/snippets/' . (&ft==''?'_':&ft) . '.snippets'
 com! -complete=command UpdateVimRc call s:UpdateVimRc()
 com! -complete=command Banner echo 'Fetching banner...' | exec 'silent sp http://ascii-text.com/online-ascii-banner-text-generator/big/' . GetCurrentWord() | exec '%s/^\_.*<pre>\(\_.\{-}\)<\/pre>\_.*$/\1/' | nohlsearch | let save_reg = @z | exec 'norm gg"zyG' | close | exec 'norm diw"zP' | let @z = save_reg
