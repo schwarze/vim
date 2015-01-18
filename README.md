@@ -17,6 +17,7 @@ Windows:
 OS X:
 ===
   - ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  - brew install macvim
   - brew install ctags-exuberant
   - brew install the_silver_searcher
   - cd ~
@@ -25,6 +26,7 @@ OS X:
 
 Ubuntu:
 ===
+  - sudo apt-get install gvim
   - sudo apt-get install git
   - sudo apt-get install exuberant-ctags
   - sudo apt-get install silversearcher-ag
