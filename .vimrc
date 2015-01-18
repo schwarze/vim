@@ -40,14 +40,23 @@ if !isdirectory($LOCALHOME."/.vimtmp/session")
     call mkdir($LOCALHOME."/.vimtmp/session", "p")
 endif
 
+if !isdirectory($LOCALHOME."/.vimtmp/ctrlpcache")
+    call mkdir($LOCALHOME."/.vimtmp/ctrlpcache", "p")
+endif
+
+if !isdirectory($LOCALHOME."/.vimtmp/startup")
+    call mkdir($LOCALHOME."/.vimtmp/startup", "p")
+endif
+
 execute "set dir=".$LOCALHOME."/.vimtmp/swap//"
 execute "set undodir=".$LOCALHOME."/.vimtmp/undo//"
 
 let g:netrw_home=$LOCALHOME ."/.vimtmp/local"
+let g:startup_dir=$LOCALHOME."/.vimtmp/startup"
+
+exec "cd ".g:startup_dir
 
 set runtimepath+=~/.vim/bundle/Vundle.vim
-
-cd $TEMP
 
 if exists('+undofile')
     set undofile
@@ -114,6 +123,7 @@ function! DefinePlugins ()
     Plugin 'luochen1990/rainbow'
     Plugin 'tyru/open-browser.vim'
     Plugin 'arecarn/crunch.vim'
+    Plugin 'deris/vim-rengbang'
 
     " CTRLP
     Plugin 'kien/ctrlp.vim'
@@ -176,7 +186,7 @@ let g:SessionFileSuffix = ""
 let g:changes_autocmd=0
 let g:session_autosave = 'no'
 
-let s:cwhl=0 
+let s:cwhl=0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " PLUGINS:
@@ -192,9 +202,9 @@ let g:SexyScroller_DetectPendingKeys = 0
 
 " CTRLP
 let g:ctrlp_cache_dir = $LOCALHOME."/.vimtmp/ctrlpcache"
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_max_files = 10000
-let g:ctrlp_max_depth = 40
+let g:ctrlp_clear_cache_on_exit = 1
+let g:ctrlp_max_files = 100
+let g:ctrlp_max_depth = 0
 let g:ctrlp_extensions = ['tag', 'line', 'changes', 'mixed', 'register', 'yankring', 'cmdline']
 let g:ctrlp_cmd = 'CtrlPMixed'
 let g:ctrlp_show_hidden = 1
@@ -301,7 +311,7 @@ set fileencodings=ucs-bom,utf-8,default,latin1
 set fo=qr
 set foldcolumn=1
 set foldmethod=manual
-set gdefault
+set nogdefault
 "set guicursor+=a:blinkon0
 set guioptions=rcAb
 set hidden
@@ -480,6 +490,12 @@ map <silent> <C-F5> {
 map <silent> <C-F6> }
 map! <silent> <C-F5> {
 map! <silent> <C-F6> }
+lmap <silent> <F5> [
+lmap <silent> <F6> ]
+lmap <silent> <S-F5> {
+lmap <silent> <S-F6> }
+lmap <silent> <C-F5> {
+lmap <silent> <C-F6> }
 
 nnoremap <silent> <F11> :Fullscreen<CR>
 
@@ -656,6 +672,8 @@ nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gd :Gdiff<CR>
 
+nnoremap <S-space>R vip:RengBangConfirm<CR>
+vnoremap <S-space>R :RengBangConfirm<CR>
 nnoremap <leader>s :SnipEdit<CR>
 nnoremap <leader>r :RainbowToggle<CR>
 
