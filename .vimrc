@@ -9,8 +9,6 @@ let $HOME=g:activevimdir
 
 execute "set runtimepath^=".expand('<sfile>:p:h')."/.vim"
 execute "set runtimepath^=".expand('<sfile>:p:h')."/vim"
-execute "set runtimepath^=".expand('<sfile>:p:h')."/vim/bin"
-execute "let $PATH.=';".expand('<sfile>:p:h')."/vim/bin'"
 
 if !isdirectory($LOCALHOME."/vim")
     call mkdir($LOCALHOME."/vim", "p")
