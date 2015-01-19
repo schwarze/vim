@@ -479,10 +479,11 @@ nnoremap <silent><C-N> :CtrlSpaceTabLabel<CR>
 vnoremap / :S<SPACE>
 vnoremap . :B<SPACE>
 
-nnoremap <silent>K :LAg! "\b<C-R><C-W>\b"<CR>:lw<CR>
-nnoremap <silent><S-Space>K :LAg! "<C-R><C-W>"<CR>:lw<CR>
-vnoremap <silent>K :SearchListGrep<CR>
+nnoremap <silent><leader>v :LAg! "\b<C-R><C-W>\b"<CR>:lw<CR>
+nnoremap <silent><S-Space>V :LAg! "<C-R><C-W>"<CR>:lw<CR>
+vnoremap <silent><leader>v :SearchListGrep<CR>
 
+nnoremap <silent> K :exec "LineBreakAt " . getline('.')[col('.')-1]<CR>
 map <leader>c <Plug>NERDComToggleComment
 
 map <silent> <F5> [
@@ -1105,6 +1106,7 @@ com! -range -nargs=* -com=expression S  <line1>,<line2>call VisBlockSearch(<q-ar
 com! -complete=command SnipEdit :exec 'sp ' . $LOCALHOME . '/.vim/bundle/schwarze-vim-snippets/snippets/' . (&ft==''?'_':&ft) . '.snippets'
 com! -complete=command UpdateVimRc call s:UpdateVimRc()
 com! -complete=command Banner echo 'Fetching banner...' | exec 'silent sp http://ascii-text.com/online-ascii-banner-text-generator/big/' . GetCurrentWord() | exec '%s/^\_.*<pre>\(\_.\{-}\)<\/pre>\_.*$/\1/' | nohlsearch | let save_reg = @z | exec 'norm gg"zyG' | close | exec 'norm diw"zP' | let @z = save_reg
+com! -bang -nargs=* -range LineBreakAt <line1>,<line2>call LineBreakAt('<bang>', <f-args>)
 
 function! SetIndent(idnt)
     exe "set tabstop=".a:idnt
@@ -1629,6 +1631,25 @@ fun! s:RestoreUserSettings()
     let &ve    = s:keep_ve
     let &ww    = s:keep_ww
 endfun
+
+function! LineBreakAt(bang, ...) range
+  let save_search = @/
+  if empty(a:bang)
+    let before = ''
+    let after = '\ze.'
+    let repl = '&\r'
+  else
+    let before = '.\zs'
+    let after = ''
+    let repl = '\r&'
+  endif
+  let pat_list = map(deepcopy(a:000), "escape(v:val, '/\\.*$^~[')")
+  let find = empty(pat_list) ? @/ : join(pat_list, '\|')
+  let find = before . '\%(' . find . '\)' . after
+  " Example: 10,20s/\%(arg1\|arg2\|arg3\)\ze./&\r/ge
+  execute a:firstline . ',' . a:lastline . 's/'. find . '/' . repl . '/ge'
+  let @/ = save_search
+endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:UpdateVimRc()
