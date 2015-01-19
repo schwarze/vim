@@ -1695,7 +1695,11 @@ function! s:FinalizeStartup()
 
     let &stl="%1* %{ctrlspace#statusline_tab_segment()} %0* %t %=%{fugitive#statusline()} %8b 0x%-8B#%n%(|%Y%)|%{&encoding}%{\"|\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",BOM\":\"\").\"\"}|%{&fileformat}%(|%R%)%(|%M%)%{(&ar?\"\":\"*\")} %10o %7.(%c%V%) %-20.(%10l/%L%) %1* %4P "
 
-    :Fullscreen
+    if has("gui_running")
+        :Fullscreen
+    else
+        colorscheme delek
+    endif
 endfunction
 
 
