@@ -131,6 +131,8 @@ function! DefinePlugins ()
 
     Plugin 'szw/vim-ctrlspace'
 
+    " Formatters
+    Plugin 'tpope/vim-jdaddy'
 
     " Snippets
     Plugin 'MarcWeber/vim-addon-mw-utils'
@@ -489,24 +491,24 @@ vnoremap K :VisualLineBreakAt<CR>
 
 map <leader>c <Plug>NERDComToggleComment
 
-map <silent> <F5> [
-map <silent> <F6> ]
-map! <silent> <F5> [
-map! <silent> <F6> ]
-map <silent> <S-F5> {
-map <silent> <S-F6> }
-map! <silent> <S-F5> {
-map! <silent> <S-F6> }
-map <silent> <C-F5> {
-map <silent> <C-F6> }
-map! <silent> <C-F5> {
-map! <silent> <C-F6> }
-lmap <silent> <F5> [
-lmap <silent> <F6> ]
-lmap <silent> <S-F5> {
-lmap <silent> <S-F6> }
-lmap <silent> <C-F5> {
-lmap <silent> <C-F6> }
+map <silent> <F2> [
+map <silent> <F3> ]
+map! <silent> <F2> [
+map! <silent> <F3> ]
+map <silent> <S-F2> {
+map <silent> <S-F3> }
+map! <silent> <S-F2> {
+map! <silent> <S-F3> }
+map <silent> <C-F2> {
+map <silent> <C-F3> }
+map! <silent> <C-F2> {
+map! <silent> <C-F3> }
+lmap <silent> <F2> [
+lmap <silent> <F3> ]
+lmap <silent> <S-F2> {
+lmap <silent> <S-F3> }
+lmap <silent> <C-F2> {
+lmap <silent> <C-F3> }
 
 nnoremap <silent> <F11> :Fullscreen<CR>
 
@@ -562,6 +564,7 @@ nnoremap <silent> <leader>, :Cleanup<CR>
 
 nmap <silent> <Leader>fb =aB
 nmap <silent> <Leader>fp =ap
+nmap <silent> <Leader>fj gqaj
 
 nmap <Plug>SwapItFallbackIncrement <Plug>SpeedDatingUp
 nmap <Plug>SwapItFallbackDecrement <Plug>SpeedDatingDown
