@@ -77,7 +77,6 @@ function! DefinePlugins ()
     Plugin 'rking/ag.vim'
 
     "Utility
-    Plugin 'dkprice/vim-easygrep'
     Plugin 'tpope/vim-fugitive'
     Plugin 'vim-scripts/searchfold.vim'
     Plugin 'Lokaltog/vim-easymotion'
@@ -175,6 +174,17 @@ elseif has('win32') || has('win64')
     endtry
 endif
 
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sessions:
@@ -201,7 +211,6 @@ let g:SexyScroller_EasingStyle = 0
 let g:SexyScroller_DetectPendingKeys = 0
 
 " CTRLP
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let g:ctrlp_cache_dir = $LOCALHOME."/.vimtmp/ctrlpcache"
 let g:ctrlp_clear_cache_on_exit = 1
 let g:ctrlp_max_files = 100
@@ -280,10 +289,6 @@ let g:tagbar_autoclose = 1
 let g:tagbar_compact = 1
 
 let g:rainbow_active = 0
-
-let g:EasyGrepRecursive = 0
-let g:EasyGrepWindow = 1
-let g:EasyGrepFilesToExclude=".git,tags"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Parameters
@@ -476,7 +481,10 @@ nnoremap <silent><C-N> :CtrlSpaceTabLabel<CR>
 vnoremap / :S<SPACE>
 vnoremap . :B<SPACE>
 
-nnoremap <silent> K :K<CR>
+nnoremap <silent>K :LAg! "\b<C-R><C-W>\b"<CR>:lw<CR>
+nnoremap <silent><S-Space>K :LAg! "<C-R><C-W>"<CR>:lw<CR>
+vnoremap <silent>K :SearchListGrep<CR>
+
 map <leader>c <Plug>NERDComToggleComment
 
 map <silent> <F5> [
@@ -618,8 +626,10 @@ nnoremap <silent> <leader>z zfi{
 nnoremap <silent> <leader>Z zd
 nnoremap <silent> <S-space>Z zD
 nnoremap <silent> <expr> <leader>fa ToggleAutoread()
-nmap <silent> <kminus> :update<CR>
-nmap <silent> <kplus> :browse tabe<CR>
+
+nmap <silent> <kminus> :Changedirup<CR>
+nmap <silent> <kplus> :Changedir<CR>
+
 nmap <silent> <kDivide> :e<CR>
 nmap <silent> <kMultiply> :update<CR>
 nmap <silent> <C-kminus> :Clipfile<CR>
@@ -767,17 +777,18 @@ nnoremap <silent> <k1> m`"*yiw``
 vnoremap <silent> <k1> m`"*y``
 nnoremap <silent> <C-k1> m`"*yiw``
 vnoremap <silent> <C-k1> m`"*y``
-inoremap <silent> <C-k1> <C-o>m`"*yiw``
+inoremap <silent> <C-k1> <C-o>m`<C-o>"*yiw<C-o>``
 nnoremap <silent> <k2> m`"*yaw``
 vnoremap <silent> <k2> m`"*y``
 nnoremap <silent> <C-k2> m`"*yaw``
 vnoremap <silent> <C-k2> m`"*y``
-inoremap <silent> <C-k2> <C-o>m`"*yaw``
+inoremap <silent> <C-k2> <C-o>m`<C-o>"*yaw<C-o>``
 nnoremap <silent> <k0> m`viw"*pb``
 vnoremap <silent> <k0> m`"*p``
 nnoremap <silent> <C-k0> m`viw"*pb``
 vnoremap <silent> <C-k0> m`"*p``
-inoremap <silent> <C-k0> <ESC>m`viw"*pbi``
+inoremap <silent> <C-k0> <C-o>m`<C-o>viw"*p<C-o>b<C-o>``
+
 
 nmap <leader>a :Tabularize /
 vmap <leader>a :Tabularize /
@@ -1090,6 +1101,7 @@ com! -nargs=0 Fullscreen :winpos 0 0|set lines=999|set columns=999
 com! -complete=command SearchList :exec 'lvim /\V\<'. escape(GetCurrentWord(), '\/') .'\>/ %'|lopen
 com! -complete=command SearchListLast :exec 'lvim // %'|lopen
 com! -range -complete=command SearchListVisual :exe("norm <C-u>") | let save_reg = @z | exec 'norm gv"zy' | exec 'lvim /\V'.@z.'/ %' | let @z = save_reg | lopen
+com! -range -complete=command SearchListGrep :exe("norm <C-u>") | let save_reg = @z | exec 'norm gv"zy' | exec 'LAg! "'.@z.'"' | let @z = save_reg | lopen
 com! -range -nargs=+ -com=command    B  <line1>,<line2>call VisBlockCmd(<q-args>)
 com! -range -nargs=* -com=expression S  <line1>,<line2>call VisBlockSearch(<q-args>)
 com! -complete=command SnipEdit :exec 'sp ' . $LOCALHOME . '/.vim/bundle/schwarze-vim-snippets/snippets/' . (&ft==''?'_':&ft) . '.snippets'
