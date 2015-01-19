@@ -13,6 +13,7 @@ Windows:
   - cd %HOMEPATH%
   - git clone https://github.com/schwarze/vim.git .\vim
   - mklink /H .vimrc vim\\.vimrc
+  - gvim
 
 OS X:
 ===
@@ -23,6 +24,7 @@ OS X:
   - cd ~
   - git clone https://github.com/schwarze/vim.git ./vim
   - ln -s vim/.vimrc .vimrc
+  - gvim
 
 Ubuntu:
 ===
@@ -33,6 +35,7 @@ Ubuntu:
   - cd ~
   - git clone https://github.com/schwarze/vim.git ./vim
   - ln -s vim/.vimrc .vimrc
+  - gvim
 
 Fedora:
 ===
@@ -40,5 +43,5 @@ Fedora:
   - cd ~
   - git clone https://github.com/schwarze/vim.git ./vim
   - ln -s vim/.vimrc .vimrc
- 
-  
+  - gvim
+
