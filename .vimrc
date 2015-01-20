@@ -1671,7 +1671,7 @@ function! s:Update()
     execute "silent call system('git checkout -- .')"
     execute "silent call system('git pull')"
     PluginClean!
-    PluginInstall!
+    PluginInstall
 endfunction
 
 function! s:SetColors()
