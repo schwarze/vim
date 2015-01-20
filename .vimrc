@@ -75,6 +75,8 @@ function! DefinePlugins ()
     Plugin 'rking/ag.vim'
 
     "Utility
+    Plugin 'Align'
+    Plugin 'SQLUtilities'
     Plugin 'tpope/vim-fugitive'
     Plugin 'vim-scripts/searchfold.vim'
     Plugin 'Lokaltog/vim-easymotion'
@@ -200,7 +202,9 @@ let s:cwhl=0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " PLUGINS:
-let g:SuperTabDefaultCompletionType = "context"
+"let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabLongestEnhanced=1
+
 let g:searchfold_do_maps = 0
 
 " Windows flicker prevention:
@@ -304,6 +308,7 @@ set backspace=indent,eol,start
 set breakat+=\|
 set browsedir=buffer
 set cmdheight=2
+set complete=.,w,b,u,t,i,k,kspell,s
 set completeopt=menu,longest
 set confirm
 set cpo-=<
@@ -473,9 +478,9 @@ nnoremap <silent> <leader>py :CtrlPYankring<CR>
 nnoremap <silent> <leader>pd :CtrlPCmdline<CR>
 
 nnoremap <silent><M-PageDown> :CtrlSpaceGoNext<CR>
-inoremap <silent><M-PageDown> :CtrlSpaceGoNext<CR>
+inoremap <silent><M-PageDown> <C-o>:CtrlSpaceGoNext<CR>
 nnoremap <silent><M-PageUp> :CtrlSpaceGoPrevious<CR>
-inoremap <silent><M-PageUp> :CtrlSpaceGoPrevious<CR>
+inoremap <silent><M-PageUp> <C-o>:CtrlSpaceGoPrevious<CR>
 nnoremap <silent><C-N> :CtrlSpaceTabLabel<CR>
 
 vnoremap / :S<SPACE>
@@ -565,6 +570,8 @@ nnoremap <silent> <leader>, :Cleanup<CR>
 nmap <silent> <Leader>fb =aB
 nmap <silent> <Leader>fp =ap
 nmap <silent> <Leader>fj gqaj
+nmap <silent> <leader>fs :SQLU_Formatter<CR>
+vmap <silent> <leader>fs :SQLU_Formatter<CR>
 
 nmap <Plug>SwapItFallbackIncrement <Plug>SpeedDatingUp
 nmap <Plug>SwapItFallbackDecrement <Plug>SpeedDatingDown
@@ -1110,7 +1117,7 @@ com! -range -complete=command SearchListGrep :exe("norm <C-u>") | let save_reg =
 com! -range -nargs=+ -com=command    B  <line1>,<line2>call VisBlockCmd(<q-args>)
 com! -range -nargs=* -com=expression S  <line1>,<line2>call VisBlockSearch(<q-args>)
 com! -complete=command SnipEdit :exec 'sp ' . $LOCALHOME . '/.vim/bundle/schwarze-vim-snippets/snippets/' . (&ft==''?'_':&ft) . '.snippets'
-com! -complete=command UpdateVimRc call s:UpdateVimRc()
+com! -complete=command Update call s:Update()
 com! -complete=command Banner echo 'Fetching banner...' | exec 'silent sp http://ascii-text.com/online-ascii-banner-text-generator/big/' . GetCurrentWord() | exec '%s/^\_.*<pre>\(\_.\{-}\)<\/pre>\_.*$/\1/' | nohlsearch | let save_reg = @z | exec 'norm gg"zyG' | close | exec 'norm diw"zP' | let @z = save_reg
 com! -bang -nargs=* -range LineBreakAt <line1>,<line2>call LineBreakAt('<bang>', <f-args>)
 com! -range -complete=command VisualLineBreakAt :exe("norm <C-u>") | let save_reg = @z | exec 'norm gv"zy' | exec 'LineBreakAt '.@z | let @z = save_reg
@@ -1659,9 +1666,12 @@ function! LineBreakAt(bang, ...) range
 endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! s:UpdateVimRc()
+function! s:Update()
     execute "cd " . $LOCALHOME . "/vim"
+    execute "silent call system('git checkout -- .')"
     execute "silent call system('git pull')"
+    PluginClean!
+    PluginInstall!
 endfunction
 
 function! s:SetColors()
@@ -1747,3 +1757,4 @@ if has("autocmd")
 else
     set smartindent
 endif
+
