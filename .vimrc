@@ -69,6 +69,7 @@ function! DefinePlugins ()
 
     Plugin 'abra/vim-abra'
 
+    Plugin 'pelodelfuego/vim-swoop'
     "" Files
     Plugin 'scrooloose/nerdtree'
     Plugin 'jistr/vim-nerdtree-tabs'
@@ -195,6 +196,7 @@ let g:session_autosave = 'no'
 
 let s:cwhl=0
 
+let g:swoopUseDefaultKeyMap = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " PLUGINS:
 let g:expand_region_text_objects = {
@@ -466,6 +468,15 @@ let g:EasyMotion_landing_highlight = 1
 nmap z/ <Plug>SearchFoldNormal
 nmap z( <Plug>SearchFoldInverse
 nmap z) <Plug>SearchFoldRestore
+
+"Swoop
+nmap <Leader><leader>7 :call Swoop()<CR>
+vmap <Leader><leader>7 :call SwoopSelection()<CR>
+nmap <leader><leader>/ :call SwoopMulti()<CR>
+vmap <leader><leader>/ :call SwoopMultiSelection()<CR>
+nmap <S-Space><S-Space>/ :call SwoopMulti()<CR>
+vmap <S-Space><S-Space>/ :call SwoopMultiSelection()<CR>
+
 
 "map <leader>0 <Plug>(easymotion-prefix)
 map <leader>7 <Plug>(easymotion-sn)
