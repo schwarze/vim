@@ -470,17 +470,17 @@ nmap z( <Plug>SearchFoldInverse
 nmap z) <Plug>SearchFoldRestore
 
 "Swoop
-nmap <Leader><leader>7 :call Swoop()<CR>
-vmap <Leader><leader>7 :call SwoopSelection()<CR>
-nmap <leader><leader>/ :call SwoopMulti()<CR>
-vmap <leader><leader>/ :call SwoopMultiSelection()<CR>
-nmap <S-Space><S-Space>/ :call SwoopMulti()<CR>
-vmap <S-Space><S-Space>/ :call SwoopMultiSelection()<CR>
+nmap <leader>7 :call Swoop()<CR>
+vmap <leader>7 :call SwoopSelection()<CR>
+nmap <leader>/ :call SwoopMulti()<CR>
+vmap <leader>/ :call SwoopMultiSelection()<CR>
+nmap <S-Space>/ :call SwoopMulti()<CR>
+vmap <S-Space>/ :call SwoopMultiSelection()<CR>
 
 
 "map <leader>0 <Plug>(easymotion-prefix)
-map <leader>7 <Plug>(easymotion-sn)
-omap <leader>7 <Plug>(easymotion-tn)
+map <leader><leader>7 <Plug>(easymotion-sn)
+omap <leader><leader>7 <Plug>(easymotion-tn)
 
 "nnoremap <silent> <C-p> :CtrlPMixed<CR>
 " Schlepp
