@@ -73,6 +73,7 @@ function! DefinePlugins ()
     Plugin 'scrooloose/nerdtree'
     Plugin 'jistr/vim-nerdtree-tabs'
     Plugin 'rking/ag.vim'
+    Plugin 'dietsche/vim-lastplace'
 
     "Utility
     Plugin 'Align'
@@ -356,7 +357,8 @@ set noautochdir
 set noautoindent
 set nobackup writebackup
 set nocindent
-set nocursorline
+set cursorline
+set cursorcolumn
 set noerrorbells
 set nofoldenable
 set nojoinspaces
@@ -400,7 +402,7 @@ set ttyscroll=3
 set undolevels=1000
 set updatetime=500
 set vb t_vb=
-set virtualedit=block
+set virtualedit=all
 set visualbell
 set wak=no
 set wcm=<C-Z>
@@ -1275,7 +1277,7 @@ endfunction
 
 function! ToggleVirtualEdit()
     if &virtualedit == ""
-        set virtualedit=block
+        set virtualedit=all
         echo "virtualedit on"
     else
         set virtualedit=""
@@ -1880,6 +1882,8 @@ function! s:SetColors()
     hi link SignColor CursorLine
     hi clear SignColumn
     hi link SignColumn CursorLine
+    hi clear CursorColumn
+    hi link CursorColumn CursorLine
     hi clear Folded
     hi link Folded CursorLine
     hi clear FoldColumn
