@@ -360,7 +360,7 @@ set noautoindent
 set nobackup writebackup
 set nocindent
 set cursorline
-set cursorcolumn
+set nocursorcolumn
 set noerrorbells
 set nofoldenable
 set nojoinspaces
@@ -551,6 +551,8 @@ nnoremap <silent> <F11> :Fullscreen<CR>
 
 nnoremap <silent> <leader><BS> :emenu <C-Z>
 nnoremap <silent> <leader>l :set relativenumber!<CR>
+nnoremap <silent> <leader>L :set cursorcolumn!<CR>
+nnoremap <silent> <S-Space>L :set cursorcolumn!<CR>
 nnoremap <silent> <leader>n :ScratchToggle<CR>
 nnoremap <silent> <leader>b :tabe<CR>
 nnoremap <silent> <leader>B :bw<CR>
@@ -608,6 +610,9 @@ nmap <silent> <leader>fx :call XmlPretty()<CR>
 
 nmap <Plug>SwapItFallbackIncrement <Plug>SpeedDatingUp
 nmap <Plug>SwapItFallbackDecrement <Plug>SpeedDatingDown
+
+imap <C-w>q <C-o><C-w>q<ESC>
+imap <C-w><C-q> <C-o><C-w>q<ESC>
 
 "** Mac mapping **********************************************************************************
 if has('gui_macvim')
@@ -709,8 +714,8 @@ xnoremap # :call StarRange__keepReg()<CR>gv"*y?\V<C-R>=StarRange__substituteSpec
 nnoremap <silent> <leader>+ :SearchList<CR>
 nnoremap <silent> <leader># :SearchListLast<CR>
 vnoremap <silent> <leader>+ :SearchListVisual<CR>
-nnoremap <leader>/ :SearchListLast<CR>
-nnoremap <S-Space>/ :SearchListLast<CR>
+"nnoremap <leader>/ :SearchListLast<CR>
+"nnoremap <S-Space>/ :SearchListLast<CR>
 nnoremap <leader>& :%Subvert/
 nnoremap <S-Space>& :%Subvert/
 nnoremap g+ g*
