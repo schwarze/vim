@@ -9,6 +9,7 @@ let $HOME=g:activevimdir
 
 execute "set runtimepath^=".expand('<sfile>:p:h')."/.vim"
 execute "set runtimepath^=".expand('<sfile>:p:h')."/vim"
+execute "set runtimepath^=".expand('<sfile>:p:h')."/vim/after"
 
 if !isdirectory($LOCALHOME."/vim")
     call mkdir($LOCALHOME."/vim", "p")
@@ -88,7 +89,7 @@ function! DefinePlugins ()
     Plugin 'cmdline-completion'
     Plugin 'IndexedSearch'
     Plugin 'LargeFile'
-    Plugin 'matchparenpp'
+    "Plugin 'matchparenpp'
     Plugin 'mbbill/undotree'
     Plugin 'mbriggs/mark.vim'
     Plugin 'tpope/vim-abolish'
@@ -191,6 +192,8 @@ let g:SessionPath = $LOCALHOME."/.vimtmp/session"
 let g:SessionFilePrefix = ".vimsession_"
 let g:SessionFileSuffix = ""
 
+let loaded_matchparen = 1
+
 let g:changes_autocmd=0
 let g:session_autosave = 'no'
 
@@ -230,6 +233,13 @@ let g:SexyScroller_CursorTime=0
 let g:SexyScroller_ScrollTime=1
 let g:SexyScroller_EasingStyle = 0
 let g:SexyScroller_DetectPendingKeys = 0
+
+" easymotion
+let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz1234567890'
+let g:EasyMotion_smartcase = 1
+let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
+let g:EasyMotion_prompt = '{n}>>> '
+let g:EasyMotion_landing_highlight = 1
 
 " CTRLP
 let g:ctrlp_cache_dir = $LOCALHOME."/.vimtmp/ctrlpcache"
@@ -285,12 +295,12 @@ let g:NERDTreeShowHidden = 1
 let g:NERDTreeShowBookmarks = 1
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeBookmarksFile = $LOCALHOME."/.vimtmp/local/NERDTreeBookmarks"
-let g:NERDTreeMapToggleZoom = "x"
-let g:NERDTreeMapChdir = "X"
+"let g:NERDTreeMapToggleZoom = "-"
+"let g:NERDTreeMapChdir = "x"
 let g:NERDTreeMapCloseDir = "c"
 let g:NERDTreeMapCloseChildren = "C"
 let g:NERDTreeMapHelp = "?"
-let g:NERDTreeHijackNetrw = 1
+let g:NERDTreeHijackNetrw = 0
 let g:NERDTreeWinPos = "right"
 let g:NERDTreeCascadeOpenSingleChildDir = 1
 
@@ -311,6 +321,21 @@ let g:tagbar_compact = 1
 
 let g:rainbow_active = 0
 
+let  g:Schlepp#dupTrimWS = 1
+
+let g:multi_cursor_start_key='<C-d>'
+let g:multi_cursor_next_key='<C-d>'
+let g:multi_cursor_prev_key='<C-e>'
+let g:multi_cursor_skip_key='<C-x>'
+let g:multi_cursor_quit_key='<Esc>'
+let g:multi_cursor_exit_from_insert_mode=0
+let g:multi_cursor_exit_from_visual_mode=0
+let g:DrChipTopLvlMenu = "Plugin."
+
+let g:undotree_SetFocusWhenToggle = 1
+
+let g:SuperTabMappingForward = '<c-space>'
+let g:SuperTabMappingBackward = '<s-c-space>'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Parameters
 let g:mapleader=" "
@@ -423,596 +448,585 @@ if g:IsVundleInstalled
     call DefinePlugins()
 endif
 
-"***************************************
-" yunk maps
-map €swp <Plug>SaveWinPosn
-map €rwp <Plug>RestoreWinPosn
-nmap €mm <Plug>MarkSet
-nmap €ms <Plug>MarkSet
-nmap €mu <Plug>MarkClear
-nmap €mr <Plug>MarkRegex
-nmap €mc <Plug>MarkAllClear
-nmap €m<down> <Plug>MarkSearchNext
-nmap €m<up> <Plug>MarkSearchPrev
-nmap €m/ <Plug>MarkSearchAnyNext
-nmap €m? <Plug>MarkSearchAnyPrev
-nmap €m* <Plug>MarkSearchCurrentNext
-nmap €m# <Plug>MarkSearchCurrentPrev
-" crunch
-map €cl <Plug>CrunchEvalLine
-map €cb <Plug>CrunchEvalBlock
-
-imap <S-Del> <C-o>dd
-nnoremap <k3> <C-U>
-nnoremap <kPoint> <C-D>
-
-nmap <silent> zs :setlocal spell!<CR>
-nmap <silent> zn ]s
-nmap <silent> zp [s
-
-" Shortcut keys
-inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
-inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
-
-let g:SuperTabMappingForward = '<c-space>'
-let g:SuperTabMappingBackward = '<s-c-space>'
-imap <C-S-Tab> <Plug>snipMateShow
-smap <C-S-Tab> <Plug>snipMateShow
-
-" easymotion
-let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz1234567890'
-let g:EasyMotion_smartcase = 1
-let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
-let g:EasyMotion_prompt = '{n}>>> '
-let g:EasyMotion_landing_highlight = 1
-
-nmap z/ <Plug>SearchFoldNormal
-nmap z( <Plug>SearchFoldInverse
-nmap z) <Plug>SearchFoldRestore
-
-"Swoop
-nmap <leader>7 :call Swoop()<CR>
-vmap <leader>7 :call SwoopSelection()<CR>
-nmap <leader>/ :call SwoopMulti()<CR>
-vmap <leader>/ :call SwoopMultiSelection()<CR>
-nmap <S-Space>/ :call SwoopMulti()<CR>
-vmap <S-Space>/ :call SwoopMultiSelection()<CR>
-
-
-"map <leader>0 <Plug>(easymotion-prefix)
-map <leader><leader>7 <Plug>(easymotion-sn)
-omap <leader><leader>7 <Plug>(easymotion-tn)
-
-"nnoremap <silent> <C-p> :CtrlPMixed<CR>
-" Schlepp
-let  g:Schlepp#dupTrimWS = 1
-vmap <silent> <C-S-up> <Plug>SchleppUp
-vmap <silent> <C-S-down> <Plug>SchleppDown
-vmap <silent> <C-S-left> <Plug>SchleppLeft
-vmap <silent> <C-S-right> <Plug>SchleppRight
-vmap <silent> <C-s> <Plug>SchleppDup
-vmap <silent> <C-S-M-up> <Plug>SchleppDupUp
-vmap <silent> <C-S-M-down> <Plug>SchleppDupDown
-vmap <silent> <C-S-M-left> <Plug>SchleppDupLeft
-vmap <silent> <C-S-M-right> <Plug>SchleppDupRight
-
-nnoremap <silent> <C-S-Space> :CtrlPMixed<CR>
-nnoremap <silent> <leader>p :CtrlPMenu<CR>
-nnoremap <silent> <leader>p<space> :CtrlPMixed<CR>
-nnoremap <silent> <leader>pp :CtrlPLastMode<CR>
-nnoremap <silent> <leader>pb :CtrlPBuffer<CR>
-nnoremap <silent> <leader>pf :CtrlPFunky<CR>
-nnoremap <silent> <leader>pr :CtrlPRegister<CR>
-nnoremap <silent> <leader>pm :CtrlPMark<CR>
-nnoremap <silent> <leader>pc :CtrlPChange<CR>
-nnoremap <silent> <leader>pu :CtrlPUndo<CR>
-nnoremap <silent> <leader>pl :CtrlPMRUFiles<CR>
-nnoremap <silent> <leader>py :CtrlPYankring<CR>
-nnoremap <silent> <leader>pd :CtrlPCmdline<CR>
-
-nnoremap <silent><M-PageDown> :CtrlSpaceGoNext<CR>
-inoremap <silent><M-PageDown> <C-o>:CtrlSpaceGoNext<CR>
-nnoremap <silent><M-PageUp> :CtrlSpaceGoPrevious<CR>
-inoremap <silent><M-PageUp> <C-o>:CtrlSpaceGoPrevious<CR>
-nnoremap <silent><C-N> :CtrlSpaceTabLabel<CR>
-
-vnoremap / :S<SPACE>
-vnoremap . :B<SPACE>
-
-nnoremap <silent><leader>v :LAg! "\b<C-R><C-W>\b"<CR>:lw<CR>
-nnoremap <silent><S-Space>V :LAg! "<C-R><C-W>"<CR>:lw<CR>
-vnoremap <silent><leader>v :SearchListGrep<CR>
-
-nnoremap <silent> K :exec "LineBreakAt " . getline('.')[col('.')-1]<CR>
-nnoremap <S-Space>K :LineBreakAt<space>
-vnoremap K :VisualLineBreakAt<CR>
-
-map <leader>c <Plug>NERDComToggleComment
-
-map <F1> [
-map <F2> ]
-map! <F1> [
-map! <F2> ]
-map <F3> {
-map <F4> }
-map! <F3> {
-map! <F4> }
-
-map <F5> <
-map <F6> >
-map! <F5> <
-map! <F6> >
-map <F7> (
-map <F8> )
-map! <F7> (
-map! <F8> )
-
-map <F9> <bar>
-map <F10> ~
-map! <F9> <bar>
-map! <F10> ~
-map <F11> /
-map <F12> \
-map! <F11> /
-map! <F12> \
-
-"nnoremap <silent> <F12> :Fullscreen<CR>
-
-nnoremap <silent> <leader><BS> :emenu <C-Z>
-nnoremap <silent> <leader>l :set relativenumber!<CR>
-nnoremap <silent> <leader>L :set cursorcolumn!<CR>
-nnoremap <silent> <S-Space>L :set cursorcolumn!<CR>
-nnoremap <silent> <leader>n :ScratchToggle<CR>
-nnoremap <silent> <leader>b :tabe<CR>
-nnoremap <silent> <leader>B :bw<CR>
-nnoremap <silent> <S-Space>B :bw<CR>
-nmap <silent> <Leader>i <Plug>IndentGuidesToggle
-nnoremap <silent> <S-Space><S-Space>B :Bdelete<CR>
-nnoremap <silent> <leader><RETURN> :update<CR>
-nnoremap <silent> <leader>- :NERDTreeToggle<CR>
-nnoremap <silent> <leader>_ :NERDTreeFind<CR>
-nnoremap <silent> <S-Space>_ :NERDTreeFind<CR>
-nnoremap <silent> <leader>. :TagbarToggle<CR>
-nnoremap <silent> <leader><M-b> :tab ball<CR>
-nnoremap <silent> <leader><C-b> :tab ball<CR>
-nnoremap <silent> <M-SPACE><M-b> :tab ball<CR>
-nnoremap <silent> <M-SPACE><M-B> :tabclose<CR>
-
-"** DiffMode ***************************
-nnoremap <silent> d<CR> :call ToggleDiff()<CR>
-nnoremap <silent> du :diffupdate<CR>
-nnoremap <silent> d<space> :call ToggleDiffOrig()<CR>
-nnoremap <silent> d<up> [c
-nnoremap <silent> d<down> ]c
-nnoremap <silent> d<left> :diffget<CR>
-nnoremap <silent> d<right> :diffput<CR>
-
-nnoremap <silent> <expr> <leader>y ToggleVirtualEdit()
-
-nnoremap <silent> <expr> <leader>w ToggleWrap()
-nnoremap <silent> <expr> <leader>ww ToggleWrap()
-
-nnoremap <leader>C :Count<CR>
-nnoremap <S-space>C :Count<CR>
-nnoremap <space><space>C :%Count<CR>
-nnoremap <S-space><S-space>C :%Count<CR>
-vnoremap <leader>C :Count<CR>
-vnoremap <S-space>C :Count<CR>
-
-nnoremap <silent> <leader>x :set invlist<CR>
-
-nnoremap <silent> <leader>u :UndotreeToggle<CR>
-
-nnoremap <silent> <leader>q @q
-vnoremap <silent> <leader>q :norm @q<CR>
-
-nnoremap <silent> <leader>L :%s/\r/\r/g<CR>
-
-nnoremap <silent> <leader>, :Cleanup<CR>
-
-nmap <silent> <Leader>fb =aB
-nmap <silent> <Leader>fp =ap
-nmap <silent> <Leader>fj gqaj
-nmap <silent> <leader>fs :SQLU_Formatter<CR>
-vmap <silent> <leader>fs :SQLU_Formatter<CR>
-nmap <silent> <leader>fx :call XmlPretty()<CR>
-
-nmap <Plug>SwapItFallbackIncrement <Plug>SpeedDatingUp
-nmap <Plug>SwapItFallbackDecrement <Plug>SpeedDatingDown
-
-imap <C-w>q <C-o><C-w>q<ESC>
-imap <C-w><C-q> <C-o><C-w>q<ESC>
-
-"** Mac mapping **********************************************************************************
-if has('gui_macvim')
-    noremap! <D-Left> <Home>
-    noremap! <D-Right> <End>
-    noremap! <D-Up> <C-Home>
-    noremap! <D-Down> <C-End>
-    inoremap <D-BS> 
-    noremap! <D-Left> <Home>
-    noremap! <D-Right> <End>
-    noremap! <D-Up> <C-Home>
-    noremap! <D-Down> <C-End>
-    noremap! <M-D-Up> <PageUp>
-    noremap! <M-D-Down> <PageDown>
-    noremap! <D-7> {
-    noremap! <D-8> [
-    noremap! <D-9> ]
-    noremap! <D-0> }
-    noremap! <D-ß> \
-    noremap! <D-#> <bar>
-    noremap! <D-lt> <bar>
-    noremap! <D-+> ~
-    vnoremap <D-7> {
-    vnoremap <D-8> [
-    vnoremap <D-9> ]
-    vnoremap <D-0> }
-    vnoremap <D-ß> \
-    vnoremap <D-#> <bar>
-    vnoremap <D-lt> <bar>
-    vnoremap <D-+> ~
-    lnoremap <D-7> {
-    lnoremap <D-8> [
-    lnoremap <D-9> ]
-    lnoremap <D-0> }
-    lnoremap <D-ß> \
-    lnoremap <D-#> <bar>
-    lnoremap <D-lt> <bar>
-    lnoremap <D-+> ~
-    onoremap <D-7> {
-    onoremap <D-8> [
-    onoremap <D-9> ]
-    onoremap <D-0> }
-    onoremap <D-ß> \
-    onoremap <D-#> <bar>
-    onoremap <D-lt> <bar>
-    onoremap <D-+> ~
-    nnoremap <silent> <D-ß><D-ß> viW:B s!/!\\!ge<CR>
-    vnoremap <silent> <D-ß><D-ß> :B s!/!\\!ge<CR>
-    nnoremap <silent> <D-ß><D-ß><D-ß> viW:B s!\\!\\\\!ge<CR>
-    vnoremap <silent> <D-ß><D-ß><D-ß> :B s!\\!\\\\!ge<CR>
-    nnoremap <silent> <D-ß>/ viW:B s!\\!/!ge<CR>
-    vnoremap <silent> <D-ß>/ :B s!\\!/!ge<CR>
-    nnoremap <silent> <D-ß><D-ß>/ viW:B s!\\\\!/!ge<CR>
-    vnoremap <silent> <D-ß><D-ß>/ :B s!\\\\!/!ge<CR>
-    nnoremap <silent> <D-ß>// viW:B s!//!/!ge<CR>
-    vnoremap <silent> <D-ß>// :B s!//!/!ge<CR>
-endif
-
-
-nnoremap <silent> <leader>z zfi{
-nnoremap <silent> <leader>Z zd
-nnoremap <silent> <S-space>Z zD
-nnoremap <silent> <expr> <leader>fa ToggleAutoread()
-
-nmap <silent> <kminus> :Changedirup<CR>
-nmap <silent> <kplus> :Changedir<CR>
-
-nmap <silent> <kDivide> :e<CR>
-nmap <silent> <kMultiply> :update<CR>
-nmap <silent> <C-kminus> :Clipfile<CR>
-nmap <silent> <S-kplus> <C-w>+
-nmap <silent> <S-kminus> <C-w>-
-imap <silent> <S-kplus> <C-o><C-w>+
-imap <silent>  <S-kminus> <C-o><C-w>-
-nnoremap Q/ q/
-nnoremap Q: q:
-nnoremap , :
-nnoremap ; q:
-nnoremap QÖ q:
-nnoremap ä @
-nnoremap Ä @@
-nnoremap ö /
-nnoremap Ö q/
-vnoremap , :
-vnoremap ; q:
-vnoremap QÖ q:
-vnoremap ä @
-vnoremap Ä @@
-vnoremap ö /
-vnoremap Ö q/
-
-nnoremap - "
-nnoremap _ "
-nnoremap + *
-
-xnoremap + :call StarRange__keepReg()<CR>gv"*y/\V<C-R>=StarRange__substituteSpecialChars(@*)<CR><CR>:call StarRange__restoreReg()<CR>:echo<CR>
-xnoremap * :call StarRange__keepReg()<CR>gv"*y/\V<C-R>=StarRange__substituteSpecialChars(@*)<CR><CR>:call StarRange__restoreReg()<CR>:echo<CR>
-xnoremap # :call StarRange__keepReg()<CR>gv"*y?\V<C-R>=StarRange__substituteSpecialChars(@*)<CR><CR>:call StarRange__restoreReg()<CR>:echo<CR>
-nnoremap <silent> <leader>+ :SearchList<CR>
-nnoremap <silent> <leader># :SearchListLast<CR>
-vnoremap <silent> <leader>+ :SearchListVisual<CR>
-"nnoremap <leader>/ :SearchListLast<CR>
-"nnoremap <S-Space>/ :SearchListLast<CR>
-nnoremap <leader>& :%Subvert/
-nnoremap <S-Space>& :%Subvert/
-nnoremap g+ g*
-
-"GIT stuff
-nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gc :Gcommit<CR>
-nnoremap <leader>gu :Gpull<CR>
-nnoremap <leader>gp :Git push<CR>
-nnoremap <leader>gf :Gfetch<CR>
-nnoremap <leader>gg :Ggrep<CR>
-nnoremap <leader>gl :Glog<CR>
-nnoremap <leader>gr :Gread<CR>
-nnoremap <leader>gw :Gwrite<CR>
-nnoremap <leader>gb :Gblame<CR>
-nnoremap <leader>gd :Gdiff<CR>
-
-nnoremap <S-space>R vip:RengBangConfirm<CR>
-vnoremap <S-space>R :B RengBangConfirm<CR>
-nnoremap <leader>s :SnipEdit<CR>
-nnoremap <leader>r :RainbowToggle<CR>
-
-nmap <leader>o <Plug>(openbrowser-search)
-vmap <leader>o <Plug>(openbrowser-search)
-
-nnoremap <silent> z<Space> za
-nnoremap <silent> Z<Space> zA
-nnoremap <silent> ZR zR
-nnoremap <silent> ZE eR
-vnoremap <silent> z<Space> zf
-
-noremap <silent> <BS><BS> mZ
-vnoremap <silent> <BS><BS> mZ
-onoremap <silent> <BS><BS> mZ
-noremap <silent> <BS><CR> `Z
-vnoremap <silent> <BS><CR> `Z
-onoremap <silent> <BS><CR> `Z
-noremap <silent> <S-BS><S-CR> 'Z
-vnoremap <silent> <S-BS><S-CR> 'Z
-onoremap <silent> <S-BS><S-CR> 'Z
-noremap <silent> m<CR> mZ
-vnoremap <silent> m<CR> mZ
-onoremap <silent> m<CR> mZ
-vnoremap <silent> <BS> `
-noremap <silent> <BS> `
-onoremap <silent> <BS> `
-
-map <S-M-right> <Plug>(expand_region_expand)
-map <S-M-left> <Plug>(expand_region_shrink)
-
-nnoremap <silent> <M-Insert> `[v`]
-vnoremap <silent> <M-Insert> <ESC>`[v`]
-nnoremap <silent> <S-M-Insert> `[=`]
-vnoremap <silent> <S-M-Insert> <ESC>`[=`]
-inoremap <silent> <S-M-Insert> <ESC>`[=`]i
-nnoremap <silent> <C-Insert> "*yy
-vnoremap <silent> <S-Insert> "-d"*P
-nnoremap <silent> <S-Insert> "*P
-cnoremap <C-S-INS> <c-r>=escape(@0, '.^$/\\')<cr>
-
-nnoremap <silent> <M-Del> viwhdl
-inoremap <silent> <M-Del> <ESC>viwhdli
-nnoremap <silent> <C-Del> viwd
-inoremap <silent> <C-Del> <ESC>viwdi
-
-nnoremap <silent> <leader><leader>. :Changedir<CR>
-nnoremap <silent> <leader><leader>: :Changedirup<CR>
-nnoremap <silent> <S-Space><S-Space>: :Changedirup<CR>
-
-nnoremap <silent> <C-u> U
-nnoremap <silent> U :redo<CR>
-
-nnoremap <silent> <M-Left> g;
-nnoremap <silent> <M-Right> g,
-
-nnoremap <silent> <C-M-Left> g-
-nnoremap <silent> <C-M-Right> g+
-inoremap <silent> <C-M-Left> <C-o>g-
-inoremap <silent> <C-M-Right> <C-o>g+
-vnoremap <silent> <C-M-Left> <ESC>g-gv
-vnoremap <silent> <C-M-Right> <ESC>g+gv
-
-inoremap <silent> <C-M-UP> <C-o>:call <SID>FindNextChange("k")<CR>
-inoremap <silent> <C-M-DOWN> <C-o>:call <SID>FindNextChange("j")<CR>
-vnoremap <silent> <C-M-UP> <ESC>:call <SID>FindNextChange("k")<CR>
-vnoremap <silent> <C-M-DOWN> <ESC>:call <SID>FindNextChange("j")<CR>
-nnoremap <silent> <C-M-UP> :call <SID>FindNextChange("k")<CR>
-nnoremap <silent> <C-M-DOWN> :call <SID>FindNextChange("j")<CR>
-
-inoremap <silent> <C-UP> <C-o>gk
-inoremap <silent> <C-DOWN> <C-o>gj
-noremap <silent> <C-UP> gk
-noremap <silent> <C-DOWN> gj
-noremap <M-home> g0
-noremap <M-end> g$
-inoremap <M-home> <c-o>g0
-inoremap <M-end> <c-o>g$
-nnoremap <C-y> ggVG
-nnoremap <k4> ggVG
-nnoremap <C-k4> ggVG
-inoremap <C-k4> <C-o>ggVG
-
-noremap <expr> <Home> (col('.') == matchend(getline('.'), '^\s*')+1 ? '0' : '^')
-noremap <expr> <End> (col('.') == match(getline('.'), '\s*$') ? '$' : 'g_')
-vnoremap <expr> <End> (col('.') == match(getline('.'), '\s*$') ? '$h' : 'g_')
-imap <Home> <C-o><Home>
-
-nnoremap <silent> <k1> m`"*yiw``
-vnoremap <silent> <k1> m`"*y``
-nnoremap <silent> <C-k1> m`"*yiw``
-vnoremap <silent> <C-k1> m`"*y``
-inoremap <silent> <C-k1> <C-o>m`<C-o>"*yiw<C-o>``
-nnoremap <silent> <k2> m`"*yaw``
-vnoremap <silent> <k2> m`"*y``
-nnoremap <silent> <C-k2> m`"*yaw``
-vnoremap <silent> <C-k2> m`"*y``
-inoremap <silent> <C-k2> <C-o>m`<C-o>"*yaw<C-o>``
-nnoremap <silent> <k0> m`viw"*pb``
-vnoremap <silent> <k0> m`"*p``
-nnoremap <silent> <C-k0> m`viw"*pb``
-vnoremap <silent> <C-k0> m`"*p``
-inoremap <silent> <C-k0> <C-o>m`<C-o>viw"*p<C-o>b<C-o>``
-
-
-nmap <leader>a :Tabularize /
-vmap <leader>a :Tabularize /
-nmap <S-Space>A= :Tabularize /=<CR>
-vmap <S-Space>A= :Tabularize /=<CR>
-nmap <S-Space>A: :Tabularize /:<CR>
-vmap <S-Space>A: :Tabularize /:<CR>
-
-nnoremap <silent> <M-+> @@
-vnoremap <silent> <M-q> :norm @@<CR>
-nnoremap <silent> <M-+> @@
-vnoremap <silent> <M-q> :norm @@<CR>
-nmap <silent> - "
-vmap <silent> - "
-nmap <silent> _ "
-vmap <silent> _ "
-nmap <silent> \\ viW:B s!/!\\!ge<CR>
-vmap <silent> \\ :B s!/!\\!ge<CR>
-nmap <silent> \\\ viW:B s!\\!\\\\!ge<CR>
-vmap <silent> \\\ :B s!\\!\\\\!ge<CR>
-nmap <silent> \/ viW:B s!\\!/!ge<CR>
-vmap <silent> \/ :B s!\\!/!ge<CR>
-nmap <silent> \\/ viW:B s!\\\\!/!ge<CR>
-vmap <silent> \\/ :B s!\\\\!/!ge<CR>
-nmap <silent> \// viW:B s!//!/!ge<CR>
-vmap <silent> \// :B s!//!/!ge<CR>
-nnoremap <silent> <C-tab> <c-w>w
-nnoremap <silent> <S-C-tab> <c-w>W
-nnoremap <silent> <S-tab> <C-o>
-nnoremap <silent> gf <C-W>gf
-vnoremap <silent> gf <C-W>gf
-nnoremap <silent> gb `[v`]
-nnoremap <silent> gp "*p
-nnoremap <silent> gP "*P
-vnoremap <silent> gy "*y
-vnoremap <silent> gY "*Y
-vnoremap <silent> < <gv
-vnoremap <silent> > >gv
-vnoremap ( <Esc>/\V\C
-nnoremap ( /\V\C
-nnoremap ) :Subvert/
-nnoremap & :%s/\V\C\<<C-R><C-W>\>/
-nnoremap <silent> <M-7> q/i
-nnoremap <silent> <M--> q/i
-nnoremap <silent> <M-.> q:i
-nnoremap <silent> <char-0x221e> q:i
-"nnoremap <silent> <C-bs> `z
-"nnoremap <silent> <C-return> mz
-nnoremap <silent> <S-return> `.
-inoremap <silent> <S-return> <C-O>`.
-nnoremap <silent> <S-bs> `.
-inoremap <silent> <S-bs> <C-O>`.
-
-vmap <RETURN> :B<space>
-nmap <silent> <kEnter> :NERDTreeFind<CR>
-
-nmap <silent> <C-w><CR> :exe 'resize '.line('$')<CR>
-nmap <silent> <C-w><C-CR> :exe 'resize '.line('$')<CR>
-inoremap <silent> <C-w> <c-o>dw
-inoremap <silent> <C-e> <c-o>de
-inoremap <silent> <C-s> <c-o>db
-inoremap <silent> <C-b> <c-o>dB
-
-nmap <silent> <leader><leader>p :call PasteJointCharacterwise(v:register, "P")<CR>
-
-nmap <leader>h :ReSyntax<CR>
-
-imap <C-e> <C-r>=
-nmap <C-e> i<C-r>=
-vmap <silent> <C-e> s<C-r>=<C-r>-<CR>
-
-
-nnoremap <silent> <expr> T TagfileCreate()
-nmap tt :ltag  <bar> lopen<left><left><left><left><left><left><left><left>
-nmap <silent> tn :tnext<CR>
-nmap <silent> tp :tNext<CR>
-nmap <silent> tr :trewind<CR>
-nmap <silent> tf :trewind<CR>
-nmap <silent> tl :tlast<CR>
-nmap <silent> tw :call ToggleLocationList()<CR>
-
-
-nnoremap <silent> <leader><leader><up> :cNext<CR>
-nnoremap <silent> <leader><leader><down> :cnext<CR>
-nnoremap <silent> <leader><leader><right> :copen<CR>
-nnoremap <silent> <leader><leader><left> :cclose<CR>
-
-nmap <script> <silent> <leader>q :call ToggleQuickfixList()<CR>
-nmap <script> <silent> <leader>t :call ToggleLocationList()<CR>
-nmap <script> <silent> <leader><leader>+ :call ToggleLocationList()<CR>
-nmap <script> <silent> <leader><leader>- :call ToggleQuickfixList()<CR>
-nmap <script> <silent> <leader><leader># :call ToggleQuickfixList()<CR>
-
-nnoremap <silent> <leader><right> :ltag <C-R><C-W><CR>
-nnoremap <silent> <leader><left> <C-t>
-nnoremap <silent> <leader><up> :lNext<CR>
-nnoremap <silent> <leader><down> :lnext<CR>
-
-"** plugin mappings ******************************************
-nmap <leader>m <plug>MarkSet
-vmap <leader>m <plug>MarkSet
-nmap <leader>M <plug>MarkAllClear
-vmap <leader>M <plug>MarkAllClear
-nmap <s-space>M <plug>MarkAllClear
-vmap <s-space>M <plug>MarkAllClear
-
-nmap <silent> <expr> t1 SetIndent(1)
-nmap <silent> <expr> t2 SetIndent(2)
-nmap <silent> <expr> t3 SetIndent(3)
-nmap <silent> <expr> t4 SetIndent(4)
-nmap <silent> <expr> t5 SetIndent(5)
-nmap <silent> <expr> t6 SetIndent(6)
-nmap <silent> <expr> t7 SetIndent(7)
-nmap <silent> <expr> t8 SetIndent(8)
-nmap <silent> <expr> t9 SetIndent(9)
-nmap <silent> t0 :retab<CR>
-vmap <silent> <expr> t1 SetIndent(1)
-vmap <silent> <expr> t2 SetIndent(2)
-vmap <silent> <expr> t3 SetIndent(3)
-vmap <silent> <expr> t4 SetIndent(4)
-vmap <silent> <expr> t5 SetIndent(5)
-vmap <silent> <expr> t6 SetIndent(6)
-vmap <silent> <expr> t7 SetIndent(7)
-vmap <silent> <expr> t8 SetIndent(8)
-vmap <silent> <expr> t9 SetIndent(9)
-vmap <silent> t0 :retab<CR>
-
-nmap <silent> <leader>ddl :DDL<CR>
-nmap <silent> <leader>dbl :DBL<CR>
-nmap <silent> <leader>dbe :DBE<CR>
-nmap <silent> <leader>dbc :CBL<CR>
-
-nmap m<left> <Plug>Vm_toggle_sign
-nmap m<right> <Plug>Vm_toggle_sign
-nmap m<up> <Plug>Vm_goto_prev_sign
-nmap m<down> <Plug>Vm_goto_next_sign
-
-
-let g:multi_cursor_start_key='<C-d>'
-let g:multi_cursor_next_key='<C-d>'
-let g:multi_cursor_prev_key='<C-e>'
-let g:multi_cursor_skip_key='<C-x>'
-let g:multi_cursor_quit_key='<Esc>'
-let g:multi_cursor_exit_from_insert_mode=0
-let g:multi_cursor_exit_from_visual_mode=0
-
-nnoremap <C-f> :MultipleCursorsFind<space>
-
-let g:DrChipTopLvlMenu = "Plugin."
-
-let g:undotree_SetFocusWhenToggle = 1
-
-cmap <C-space> <Plug>CmdlineCompletionForward
-cmap <C-tab> <Plug>CmdlineCompletionForward
-cmap <C-S-tab> <Plug>CmdlineCompletionBackward
-cmap <C-S-space> <Plug>CmdlineCompletionBackward
-cmap <C-RETURN> <C-R><C-W>
-cmap <S-RETURN> <C-R><C-W>
-cmap <S-Space> %20
-
-nnoremap <silent> <leader>ff :Banner<CR>
-":OpenBrowser http://www.patorjk.com/software/taag/#f=Big&t=
-nnoremap <leader>fl :for i in range(1,10) <bar> put =printf('%d', i) <bar> endfor<left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left>
-
-nnoremap <C-return> :call ToggleCurrentWordHL()<CR>
+function! DefineMapping()
+    "***************************************
+    " yunk maps
+    map €swp <Plug>SaveWinPosn
+    map €rwp <Plug>RestoreWinPosn
+    nmap €mm <Plug>MarkSet
+    nmap €ms <Plug>MarkSet
+    nmap €mu <Plug>MarkClear
+    nmap €mr <Plug>MarkRegex
+    nmap €mc <Plug>MarkAllClear
+    nmap €m<down> <Plug>MarkSearchNext
+    nmap €m<up> <Plug>MarkSearchPrev
+    nmap €m/ <Plug>MarkSearchAnyNext
+    nmap €m? <Plug>MarkSearchAnyPrev
+    nmap €m* <Plug>MarkSearchCurrentNext
+    nmap €m# <Plug>MarkSearchCurrentPrev
+    " crunch
+    map €cl <Plug>CrunchEvalLine
+    map €cb <Plug>CrunchEvalBlock
+
+    imap <S-Del> <C-o>dd
+    nnoremap <k3> <C-U>
+    nnoremap <kPoint> <C-D>
+
+    nmap <silent> zs :setlocal spell!<CR>
+    nmap <silent> zn ]s
+    nmap <silent> zp [s
+
+    " Shortcut keys
+    inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
+    inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
+
+    imap <C-S-Tab> <Plug>snipMateShow
+    smap <C-S-Tab> <Plug>snipMateShow
+
+    nmap z/ <Plug>SearchFoldNormal
+    nmap z( <Plug>SearchFoldInverse
+    nmap z) <Plug>SearchFoldRestore
+
+    "Swoop
+    nmap <leader>7 :call Swoop()<CR>
+    vmap <leader>7 :call SwoopSelection()<CR>
+    nmap <leader>/ :call SwoopMulti()<CR>
+    vmap <leader>/ :call SwoopMultiSelection()<CR>
+    nmap <S-Space>/ :call SwoopMulti()<CR>
+    vmap <S-Space>/ :call SwoopMultiSelection()<CR>
+
+
+    "map <leader>0 <Plug>(easymotion-prefix)
+    map <leader><leader>7 <Plug>(easymotion-sn)
+    omap <leader><leader>7 <Plug>(easymotion-tn)
+
+    "nnoremap <silent> <C-p> :CtrlPMixed<CR>
+    " Schlepp
+    vmap <silent> <C-S-up> <Plug>SchleppUp
+    vmap <silent> <C-S-down> <Plug>SchleppDown
+    vmap <silent> <C-S-left> <Plug>SchleppLeft
+    vmap <silent> <C-S-right> <Plug>SchleppRight
+    vmap <silent> <C-s> <Plug>SchleppDup
+    vmap <silent> <C-S-M-up> <Plug>SchleppDupUp
+    vmap <silent> <C-S-M-down> <Plug>SchleppDupDown
+    vmap <silent> <C-S-M-left> <Plug>SchleppDupLeft
+    vmap <silent> <C-S-M-right> <Plug>SchleppDupRight
+
+    nnoremap <silent> <C-S-Space> :CtrlPMixed<CR>
+    nnoremap <silent> <leader>p :CtrlPMenu<CR>
+    nnoremap <silent> <leader>p<space> :CtrlPMixed<CR>
+    nnoremap <silent> <leader>pp :CtrlPLastMode<CR>
+    nnoremap <silent> <leader>pb :CtrlPBuffer<CR>
+    nnoremap <silent> <leader>pf :CtrlPFunky<CR>
+    nnoremap <silent> <leader>pr :CtrlPRegister<CR>
+    nnoremap <silent> <leader>pm :CtrlPMark<CR>
+    nnoremap <silent> <leader>pc :CtrlPChange<CR>
+    nnoremap <silent> <leader>pu :CtrlPUndo<CR>
+    nnoremap <silent> <leader>pl :CtrlPMRUFiles<CR>
+    nnoremap <silent> <leader>py :CtrlPYankring<CR>
+    nnoremap <silent> <leader>pd :CtrlPCmdline<CR>
+
+    nnoremap <silent><M-PageDown> :CtrlSpaceGoNext<CR>
+    inoremap <silent><M-PageDown> <C-o>:CtrlSpaceGoNext<CR>
+    nnoremap <silent><M-PageUp> :CtrlSpaceGoPrevious<CR>
+    inoremap <silent><M-PageUp> <C-o>:CtrlSpaceGoPrevious<CR>
+    nnoremap <silent><C-N> :CtrlSpaceTabLabel<CR>
+
+    vnoremap / :S<SPACE>
+    vnoremap . :B<SPACE>
+
+    nnoremap <silent><leader>v :LAg! "\b<C-R><C-W>\b"<CR>:lw<CR>
+    nnoremap <silent><S-Space>V :LAg! "<C-R><C-W>"<CR>:lw<CR>
+    vnoremap <silent><leader>v :SearchListGrep<CR>
+
+    nnoremap <silent> K :exec "LineBreakAt " . getline('.')[col('.')-1]<CR>
+    nnoremap <S-Space>K :LineBreakAt<space>
+    vnoremap K :VisualLineBreakAt<CR>
+
+    map <leader>c <Plug>NERDComToggleComment
+
+    map <F1> [
+    map <F2> ]
+    map! <F1> [
+    map! <F2> ]
+    map <F3> {
+    map <F4> }
+    map! <F3> {
+    map! <F4> }
+
+    map <F5> <
+    map <F6> >
+    map! <F5> <
+    map! <F6> >
+    map <F7> (
+    map <F8> )
+    map! <F7> (
+    map! <F8> )
+
+    map <F9> <bar>
+    map <F10> ~
+    map! <F9> <bar>
+    map! <F10> ~
+    map <F11> /
+    map <F12> \
+    map! <F11> /
+    map! <F12> \
+
+    "nnoremap <silent> <F12> :Fullscreen<CR>
+
+    nnoremap <silent> <leader><BS> :emenu <C-Z>
+    nnoremap <silent> <leader>l :set relativenumber!<CR>
+    nnoremap <silent> <leader>L :set cursorcolumn!<CR>
+    nnoremap <silent> <S-Space>L :set cursorcolumn!<CR>
+    nnoremap <silent> <leader>n :ScratchToggle<CR>
+    nnoremap <silent> <leader>b :tabe<CR>
+    nnoremap <silent> <leader>B :bw<CR>
+    nnoremap <silent> <S-Space>B :bw<CR>
+    nmap <silent> <Leader>i <Plug>IndentGuidesToggle
+    nnoremap <silent> <S-Space><S-Space>B :Bdelete<CR>
+    nnoremap <silent> <leader><RETURN> :update<CR>
+    nnoremap <silent> <leader>- :NERDTreeToggle<CR>
+    nnoremap <silent> <leader>_ :NERDTreeFind<CR>
+    nnoremap <silent> <S-Space>_ :NERDTreeFind<CR>
+    nnoremap <silent> <leader>. :TagbarToggle<CR>
+    nnoremap <silent> <leader><M-b> :tab ball<CR>
+    nnoremap <silent> <leader><C-b> :tab ball<CR>
+    nnoremap <silent> <M-SPACE><M-b> :tab ball<CR>
+    nnoremap <silent> <M-SPACE><M-B> :tabclose<CR>
+
+    "** DiffMode ***************************
+    nnoremap <silent> d<CR> :call ToggleDiff()<CR>
+    nnoremap <silent> du :diffupdate<CR>
+    nnoremap <silent> d<space> :call ToggleDiffOrig()<CR>
+    nnoremap <silent> d<up> [c
+    nnoremap <silent> d<down> ]c
+    nnoremap <silent> d<left> :diffget<CR>
+    nnoremap <silent> d<right> :diffput<CR>
+
+    nnoremap <silent> <expr> <leader>y ToggleVirtualEdit()
+
+    nnoremap <silent> <expr> <leader>w ToggleWrap()
+    nnoremap <silent> <expr> <leader>ww ToggleWrap()
+
+    nnoremap <leader>C :Count<CR>
+    nnoremap <S-space>C :Count<CR>
+    nnoremap <space><space>C :%Count<CR>
+    nnoremap <S-space><S-space>C :%Count<CR>
+    vnoremap <leader>C :Count<CR>
+    vnoremap <S-space>C :Count<CR>
+
+    nnoremap <silent> <leader>x :set invlist<CR>
+
+    nnoremap <silent> <leader>u :UndotreeToggle<CR>
+
+    nnoremap <silent> <leader>q @q
+    vnoremap <silent> <leader>q :norm @q<CR>
+
+    nnoremap <silent> <leader>, :Cleanup<CR>
+
+    nmap <silent> <Leader>fb =aB
+    nmap <silent> <Leader>fp =ap
+    nmap <silent> <Leader>fj gqaj
+    nmap <silent> <leader>fs :SQLU_Formatter<CR>
+    vmap <silent> <leader>fs :SQLU_Formatter<CR>
+    nmap <silent> <leader>fx :call XmlPretty()<CR>
+
+    nmap <Plug>SwapItFallbackIncrement <Plug>SpeedDatingUp
+    nmap <Plug>SwapItFallbackDecrement <Plug>SpeedDatingDown
+
+    imap <C-w>q <C-o><C-w>q<ESC>
+    imap <C-w><C-q> <C-o><C-w>q<ESC>
+
+    "** Mac mapping **********************************************************************************
+    if has('gui_macvim')
+        noremap! <D-Left> <Home>
+        noremap! <D-Right> <End>
+        noremap! <D-Up> <C-Home>
+        noremap! <D-Down> <C-End>
+        inoremap <D-BS> 
+        noremap! <D-Left> <Home>
+        noremap! <D-Right> <End>
+        noremap! <D-Up> <C-Home>
+        noremap! <D-Down> <C-End>
+        noremap! <M-D-Up> <PageUp>
+        noremap! <M-D-Down> <PageDown>
+        noremap! <D-7> {
+        noremap! <D-8> [
+        noremap! <D-9> ]
+        noremap! <D-0> }
+        noremap! <D-ß> \
+        noremap! <D-#> <bar>
+        noremap! <D-lt> <bar>
+        noremap! <D-+> ~
+        vnoremap <D-7> {
+        vnoremap <D-8> [
+        vnoremap <D-9> ]
+        vnoremap <D-0> }
+        vnoremap <D-ß> \
+        vnoremap <D-#> <bar>
+        vnoremap <D-lt> <bar>
+        vnoremap <D-+> ~
+        lnoremap <D-7> {
+        lnoremap <D-8> [
+        lnoremap <D-9> ]
+        lnoremap <D-0> }
+        lnoremap <D-ß> \
+        lnoremap <D-#> <bar>
+        lnoremap <D-lt> <bar>
+        lnoremap <D-+> ~
+        onoremap <D-7> {
+        onoremap <D-8> [
+        onoremap <D-9> ]
+        onoremap <D-0> }
+        onoremap <D-ß> \
+        onoremap <D-#> <bar>
+        onoremap <D-lt> <bar>
+        onoremap <D-+> ~
+        nnoremap <silent> <D-ß><D-ß> viW:B s!/!\\!ge<CR>
+        vnoremap <silent> <D-ß><D-ß> :B s!/!\\!ge<CR>
+        nnoremap <silent> <D-ß><D-ß><D-ß> viW:B s!\\!\\\\!ge<CR>
+        vnoremap <silent> <D-ß><D-ß><D-ß> :B s!\\!\\\\!ge<CR>
+        nnoremap <silent> <D-ß>/ viW:B s!\\!/!ge<CR>
+        vnoremap <silent> <D-ß>/ :B s!\\!/!ge<CR>
+        nnoremap <silent> <D-ß><D-ß>/ viW:B s!\\\\!/!ge<CR>
+        vnoremap <silent> <D-ß><D-ß>/ :B s!\\\\!/!ge<CR>
+        nnoremap <silent> <D-ß>// viW:B s!//!/!ge<CR>
+        vnoremap <silent> <D-ß>// :B s!//!/!ge<CR>
+    endif
+
+
+    nnoremap <silent> <leader>z zfi{
+    nnoremap <silent> <leader>Z zd
+    nnoremap <silent> <S-space>Z zD
+    nnoremap <silent> <expr> <leader>fa ToggleAutoread()
+
+    nmap <silent> <kminus> :Changedirup<CR>
+    nmap <silent> <kplus> :Changedir<CR>
+
+    nmap <silent> <kDivide> :e<CR>
+    nmap <silent> <kMultiply> :update<CR>
+    nmap <silent> <C-kminus> :Clipfile<CR>
+    nmap <silent> <S-kplus> <C-w>+
+    nmap <silent> <S-kminus> <C-w>-
+    imap <silent> <S-kplus> <C-o><C-w>+
+    imap <silent>  <S-kminus> <C-o><C-w>-
+    nnoremap Q/ q/
+    nnoremap Q: q:
+    nnoremap , :
+    nnoremap ; q:
+    nnoremap QÖ q:
+    nnoremap ä @
+    nnoremap Ä @@
+    nnoremap ö /
+    nnoremap Ö q/
+    vnoremap , :
+    vnoremap ; q:
+    vnoremap QÖ q:
+    vnoremap ä @
+    vnoremap Ä @@
+    vnoremap ö /
+    vnoremap Ö q/
+
+    nnoremap - "
+    nnoremap _ "
+    nnoremap + *
+
+    xnoremap + :call StarRange__keepReg()<CR>gv"*y/\V<C-R>=StarRange__substituteSpecialChars(@*)<CR><CR>:call StarRange__restoreReg()<CR>:echo<CR>
+    xnoremap * :call StarRange__keepReg()<CR>gv"*y/\V<C-R>=StarRange__substituteSpecialChars(@*)<CR><CR>:call StarRange__restoreReg()<CR>:echo<CR>
+    xnoremap # :call StarRange__keepReg()<CR>gv"*y?\V<C-R>=StarRange__substituteSpecialChars(@*)<CR><CR>:call StarRange__restoreReg()<CR>:echo<CR>
+    nnoremap <silent> <leader>+ :SearchList<CR>
+    nnoremap <silent> <leader># :SearchListLast<CR>
+    vnoremap <silent> <leader>+ :SearchListVisual<CR>
+    "nnoremap <leader>/ :SearchListLast<CR>
+    "nnoremap <S-Space>/ :SearchListLast<CR>
+    nnoremap <leader>& :%Subvert/
+    nnoremap <S-Space>& :%Subvert/
+    nnoremap g+ g*
+
+    "GIT stuff
+    nnoremap <leader>gs :Gstatus<CR>
+    nnoremap <leader>gc :Gcommit<CR>
+    nnoremap <leader>gu :Gpull<CR>
+    nnoremap <leader>gp :Git push<CR>
+    nnoremap <leader>gf :Gfetch<CR>
+    nnoremap <leader>gg :Ggrep<CR>
+    nnoremap <leader>gl :Glog<CR>
+    nnoremap <leader>gr :Gread<CR>
+    nnoremap <leader>gw :Gwrite<CR>
+    nnoremap <leader>gb :Gblame<CR>
+    nnoremap <leader>gd :Gdiff<CR>
+
+    nnoremap <S-space>R vip:RengBangConfirm<CR>
+    vnoremap <S-space>R :B RengBangConfirm<CR>
+    nnoremap <leader>s :SnipEdit<CR>
+    nnoremap <leader>r :RainbowToggle<CR>
+
+    nmap <leader>o <Plug>(openbrowser-search)
+    vmap <leader>o <Plug>(openbrowser-search)
+
+    nnoremap <silent> z<Space> za
+    nnoremap <silent> Z<Space> zA
+    nnoremap <silent> ZR zR
+    nnoremap <silent> ZE eR
+    vnoremap <silent> z<Space> zf
+
+    noremap <silent> <BS><BS> mZ
+    vnoremap <silent> <BS><BS> mZ
+    onoremap <silent> <BS><BS> mZ
+    noremap <silent> <BS><CR> `Z
+    vnoremap <silent> <BS><CR> `Z
+    onoremap <silent> <BS><CR> `Z
+    noremap <silent> <S-BS><S-CR> 'Z
+    vnoremap <silent> <S-BS><S-CR> 'Z
+    onoremap <silent> <S-BS><S-CR> 'Z
+    noremap <silent> m<CR> mZ
+    vnoremap <silent> m<CR> mZ
+    onoremap <silent> m<CR> mZ
+    vnoremap <silent> <BS> `
+    noremap <silent> <BS> `
+    onoremap <silent> <BS> `
+
+    map <S-M-right> <Plug>(expand_region_expand)
+    map <S-M-left> <Plug>(expand_region_shrink)
+
+    nnoremap <silent> <M-Insert> `[v`]
+    vnoremap <silent> <M-Insert> <ESC>`[v`]
+    nnoremap <silent> <S-M-Insert> `[=`]
+    vnoremap <silent> <S-M-Insert> <ESC>`[=`]
+    inoremap <silent> <S-M-Insert> <ESC>`[=`]i
+    nnoremap <silent> <C-Insert> "*yy
+    vnoremap <silent> <S-Insert> "-d"*P
+    nnoremap <silent> <S-Insert> "*P
+    cnoremap <C-S-INS> <c-r>=escape(@0, '.^$/\\')<cr>
+
+    nnoremap <silent> <M-Del> viwhdl
+    inoremap <silent> <M-Del> <ESC>viwhdli
+    nnoremap <silent> <C-Del> viwd
+    inoremap <silent> <C-Del> <ESC>viwdi
+
+    nnoremap <silent> <leader><leader>. :Changedir<CR>
+    nnoremap <silent> <leader><leader>: :Changedirup<CR>
+    nnoremap <silent> <S-Space><S-Space>: :Changedirup<CR>
+
+    nnoremap <silent> <C-u> U
+    nnoremap <silent> U :redo<CR>
+
+    nnoremap <silent> <M-Left> g;
+    nnoremap <silent> <M-Right> g,
+
+    nnoremap <silent> <C-M-Left> g-
+    nnoremap <silent> <C-M-Right> g+
+    inoremap <silent> <C-M-Left> <C-o>g-
+    inoremap <silent> <C-M-Right> <C-o>g+
+    vnoremap <silent> <C-M-Left> <ESC>g-gv
+    vnoremap <silent> <C-M-Right> <ESC>g+gv
+
+    inoremap <silent> <C-M-UP> <C-o>:call <SID>FindNextChange("k")<CR>
+    inoremap <silent> <C-M-DOWN> <C-o>:call <SID>FindNextChange("j")<CR>
+    vnoremap <silent> <C-M-UP> <ESC>:call <SID>FindNextChange("k")<CR>
+    vnoremap <silent> <C-M-DOWN> <ESC>:call <SID>FindNextChange("j")<CR>
+    nnoremap <silent> <C-M-UP> :call <SID>FindNextChange("k")<CR>
+    nnoremap <silent> <C-M-DOWN> :call <SID>FindNextChange("j")<CR>
+
+    inoremap <silent> <C-UP> <C-o>gk
+    inoremap <silent> <C-DOWN> <C-o>gj
+    noremap <silent> <C-UP> gk
+    noremap <silent> <C-DOWN> gj
+    noremap <M-home> g0
+    noremap <M-end> g$
+    inoremap <M-home> <c-o>g0
+    inoremap <M-end> <c-o>g$
+    nnoremap <C-y> ggVG
+    nnoremap <k4> ggVG
+    nnoremap <C-k4> ggVG
+    inoremap <C-k4> <C-o>ggVG
+
+    noremap <expr> <Home> (col('.') == matchend(getline('.'), '^\s*')+1 ? '0' : '^')
+    noremap <expr> <End> (col('.') == match(getline('.'), '\s*$') ? '$' : 'g_')
+    vnoremap <expr> <End> (col('.') == match(getline('.'), '\s*$') ? '$h' : 'g_')
+    imap <Home> <C-o><Home>
+
+    nnoremap <silent> <k1> m`"*yiw``
+    vnoremap <silent> <k1> m`"*y``
+    nnoremap <silent> <C-k1> m`"*yiw``
+    vnoremap <silent> <C-k1> m`"*y``
+    inoremap <silent> <C-k1> <C-o>m`<C-o>"*yiw<C-o>``
+    nnoremap <silent> <k2> m`"*yaw``
+    vnoremap <silent> <k2> m`"*y``
+    nnoremap <silent> <C-k2> m`"*yaw``
+    vnoremap <silent> <C-k2> m`"*y``
+    inoremap <silent> <C-k2> <C-o>m`<C-o>"*yaw<C-o>``
+    nnoremap <silent> <k0> m`viw"*pb``
+    vnoremap <silent> <k0> m`"*p``
+    nnoremap <silent> <C-k0> m`viw"*pb``
+    vnoremap <silent> <C-k0> m`"*p``
+    inoremap <silent> <C-k0> <C-o>m`<C-o>viw"*p<C-o>b<C-o>``
+
+
+    nmap <leader>a :Tabularize /
+    vmap <leader>a :Tabularize /
+    nmap <S-Space>A= :Tabularize /=<CR>
+    vmap <S-Space>A= :Tabularize /=<CR>
+    nmap <S-Space>A: :Tabularize /:<CR>
+    vmap <S-Space>A: :Tabularize /:<CR>
+
+    nnoremap <silent> <M-+> @@
+    vnoremap <silent> <M-q> :norm @@<CR>
+    nnoremap <silent> <M-+> @@
+    vnoremap <silent> <M-q> :norm @@<CR>
+    nmap <silent> - "
+    vmap <silent> - "
+    nmap <silent> _ "
+    vmap <silent> _ "
+    nmap <silent> \\ viW:B s!/!\\!ge<CR>
+    vmap <silent> \\ :B s!/!\\!ge<CR>
+    nmap <silent> \\\ viW:B s!\\!\\\\!ge<CR>
+    vmap <silent> \\\ :B s!\\!\\\\!ge<CR>
+    nmap <silent> \/ viW:B s!\\!/!ge<CR>
+    vmap <silent> \/ :B s!\\!/!ge<CR>
+    nmap <silent> \\/ viW:B s!\\\\!/!ge<CR>
+    vmap <silent> \\/ :B s!\\\\!/!ge<CR>
+    nmap <silent> \// viW:B s!//!/!ge<CR>
+    vmap <silent> \// :B s!//!/!ge<CR>
+    nnoremap <silent> <C-tab> <c-w>w
+    nnoremap <silent> <S-C-tab> <c-w>W
+    nnoremap <silent> <S-tab> <C-o>
+    nnoremap <silent> gf <C-W>gf
+    vnoremap <silent> gf <C-W>gf
+    nnoremap <silent> gb `[v`]
+    nnoremap <silent> gp "*p
+    nnoremap <silent> gP "*P
+    vnoremap <silent> gy "*y
+    vnoremap <silent> gY "*Y
+    vnoremap <silent> < <gv
+    vnoremap <silent> > >gv
+    vnoremap ( <Esc>/\V\C
+    nnoremap ( /\V\C
+    nnoremap ) :Subvert/
+    nnoremap & :%s/\V\C\<<C-R><C-W>\>/
+    nnoremap <silent> <M-7> q/i
+    nnoremap <silent> <M--> q/i
+    nnoremap <silent> <M-.> q:i
+    nnoremap <silent> <char-0x221e> q:i
+    "nnoremap <silent> <C-bs> `z
+    "nnoremap <silent> <C-return> mz
+    nnoremap <silent> <S-return> `.
+    inoremap <silent> <S-return> <C-O>`.
+    nnoremap <silent> <S-bs> `.
+    inoremap <silent> <S-bs> <C-O>`.
+
+    vmap <RETURN> :B<space>
+    nmap <silent> <kEnter> :NERDTreeFind<CR>
+
+    nmap <silent> <C-w><CR> :exe 'resize '.line('$')<CR>
+    nmap <silent> <C-w><C-CR> :exe 'resize '.line('$')<CR>
+    inoremap <silent> <C-w> <c-o>dw
+    inoremap <silent> <C-e> <c-o>de
+    inoremap <silent> <C-s> <c-o>db
+    inoremap <silent> <C-b> <c-o>dB
+
+    nmap <silent> <leader><leader>p :call PasteJointCharacterwise(v:register, "P")<CR>
+
+    nmap <leader>h :ReSyntax<CR>
+
+    imap <C-e> <C-r>=
+    nmap <C-e> i<C-r>=
+    vmap <silent> <C-e> s<C-r>=<C-r>-<CR>
+
+
+    nnoremap <silent> <expr> T TagfileCreate()
+    nmap tt :ltag  <bar> lopen<left><left><left><left><left><left><left><left>
+    nmap <silent> tn :tnext<CR>
+    nmap <silent> tp :tNext<CR>
+    nmap <silent> tr :trewind<CR>
+    nmap <silent> tf :trewind<CR>
+    nmap <silent> tl :tlast<CR>
+    nmap <silent> tw :call ToggleLocationList()<CR>
+
+
+    nnoremap <silent> <leader><leader><up> :cNext<CR>
+    nnoremap <silent> <leader><leader><down> :cnext<CR>
+    nnoremap <silent> <leader><leader><right> :copen<CR>
+    nnoremap <silent> <leader><leader><left> :cclose<CR>
+
+    nmap <script> <silent> <leader>q :call ToggleQuickfixList()<CR>
+    nmap <script> <silent> <leader>t :call ToggleLocationList()<CR>
+    nmap <script> <silent> <leader><leader>+ :call ToggleLocationList()<CR>
+    nmap <script> <silent> <leader><leader>- :call ToggleQuickfixList()<CR>
+    nmap <script> <silent> <leader><leader># :call ToggleQuickfixList()<CR>
+
+    nnoremap <silent> <leader><right> :ltag <C-R><C-W><CR>
+    nnoremap <silent> <leader><left> <C-t>
+    nnoremap <silent> <leader><up> :lNext<CR>
+    nnoremap <silent> <leader><down> :lnext<CR>
+
+    "** plugin mappings ******************************************
+    nmap <leader>m <plug>MarkSet
+    vmap <leader>m <plug>MarkSet
+    nmap <leader>M <plug>MarkAllClear
+    vmap <leader>M <plug>MarkAllClear
+    nmap <s-space>M <plug>MarkAllClear
+    vmap <s-space>M <plug>MarkAllClear
+
+    nmap <silent> <expr> t1 SetIndent(1)
+    nmap <silent> <expr> t2 SetIndent(2)
+    nmap <silent> <expr> t3 SetIndent(3)
+    nmap <silent> <expr> t4 SetIndent(4)
+    nmap <silent> <expr> t5 SetIndent(5)
+    nmap <silent> <expr> t6 SetIndent(6)
+    nmap <silent> <expr> t7 SetIndent(7)
+    nmap <silent> <expr> t8 SetIndent(8)
+    nmap <silent> <expr> t9 SetIndent(9)
+    nmap <silent> t0 :retab<CR>
+    vmap <silent> <expr> t1 SetIndent(1)
+    vmap <silent> <expr> t2 SetIndent(2)
+    vmap <silent> <expr> t3 SetIndent(3)
+    vmap <silent> <expr> t4 SetIndent(4)
+    vmap <silent> <expr> t5 SetIndent(5)
+    vmap <silent> <expr> t6 SetIndent(6)
+    vmap <silent> <expr> t7 SetIndent(7)
+    vmap <silent> <expr> t8 SetIndent(8)
+    vmap <silent> <expr> t9 SetIndent(9)
+    vmap <silent> t0 :retab<CR>
+
+    nmap <silent> <leader>ddl :DDL<CR>
+    nmap <silent> <leader>dbl :DBL<CR>
+    nmap <silent> <leader>dbe :DBE<CR>
+    nmap <silent> <leader>dbc :CBL<CR>
+
+    nmap m<left> <Plug>Vm_toggle_sign
+    nmap m<right> <Plug>Vm_toggle_sign
+    nmap m<up> <Plug>Vm_goto_prev_sign
+    nmap m<down> <Plug>Vm_goto_next_sign
+
+    nnoremap <C-f> :MultipleCursorsFind<space>
+
+    cmap <C-space> <Plug>CmdlineCompletionForward
+    cmap <C-tab> <Plug>CmdlineCompletionForward
+    cmap <C-S-tab> <Plug>CmdlineCompletionBackward
+    cmap <C-S-space> <Plug>CmdlineCompletionBackward
+    cmap <C-RETURN> <C-R><C-W>
+    cmap <S-RETURN> <C-R><C-W>
+    cmap <S-Space> %20
+
+    nnoremap <silent> <leader>ff :Banner<CR>
+    ":OpenBrowser http://www.patorjk.com/software/taag/#f=Big&t=
+    nnoremap <leader>fl :for i in range(1,10) <bar> put =printf('%d', i) <bar> endfor<left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left>
+
+    nnoremap <C-return> :call ToggleCurrentWordHL()<CR>
+    " Only in visual mode...
+    vmap  q :call Uniq()<CR>
+    vmap  Q :call Uniq('ignore whitespace')<CR>
+
+    nmap <silent> <M-S-Up> :<C-u>call MoveUp()<CR>
+    nmap <silent> <M-S-Down> :<C-u>call MoveDown()<CR>
+    imap <silent> <M-S-Up> <C-o>:<C-u>call MoveUp()<CR>
+    imap <silent> <M-S-Down> <C-o>:<C-u>call MoveDown()<CR>
+    vmap <silent> <M-S-Up> :<C-u>call MoveVisualUp()<CR>
+    vmap <silent> <M-S-Down> :<C-u>call MoveVisualDown()<CR>
+endfunction
+
+call DefineMapping()
 
 "======[ Order-preserving uniqueness ]=========================
 
@@ -1048,9 +1062,6 @@ function! Uniq (...) range
     call append(a:firstline-1, uniq_lines)
 endfunction
 
-" Only in visual mode...
-vmap  q :call Uniq()<CR>
-vmap  Q :call Uniq('ignore whitespace')<CR>
 "***********************************************************
 
 function! GetCurrentWord()
@@ -1110,14 +1121,6 @@ endfunction
 function! MoveUpDown(arg)
     execute 'silent! ' . a:arg
 endfunction
-
-
-nmap <silent> <M-S-Up> :<C-u>call MoveUp()<CR>
-nmap <silent> <M-S-Down> :<C-u>call MoveDown()<CR>
-imap <silent> <M-S-Up> <C-o>:<C-u>call MoveUp()<CR>
-imap <silent> <M-S-Down> <C-o>:<C-u>call MoveDown()<CR>
-vmap <silent> <M-S-Up> :<C-u>call MoveVisualUp()<CR>
-vmap <silent> <M-S-Down> :<C-u>call MoveVisualDown()<CR>
 
 
 " ******* Commands **************************************************
@@ -1875,6 +1878,18 @@ function! LineBreakAt(bang, ...) range
   " Example: 10,20s/\%(arg1\|arg2\|arg3\)\ze./&\r/ge
   execute a:firstline . ',' . a:lastline . 's/'. find . '/' . repl . '/ge'
   let @/ = save_search
+endfunction
+
+function! Multiple_cursors_before()
+    if exists('*SwoopFreezeContext') != 0
+        call SwoopFreezeContext()
+    endif
+endfunction
+
+function! Multiple_cursors_after()
+    if exists('*SwoopUnFreezeContext') != 0
+        call SwoopUnFreezeContext()
+    endif
 endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
