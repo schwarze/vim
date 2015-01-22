@@ -1,6 +1,6 @@
 vim
 ===
-Portable vim configuration w/ self-installing plugins
+Portable vim clipboard deployment w/ self-installing plugins
 
 Windows:
 ===
