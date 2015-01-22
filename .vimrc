@@ -1882,6 +1882,16 @@ function! s:Update()
     execute "cd " . $LOCALHOME . "/vim"
     execute "silent call system('git checkout -- .')"
     execute "silent call system('git pull')"
+    try
+        execute "silent call delete('".$LOCALHOME.".vimrc')"
+    catch
+    endtry
+    if has('gui_macvim')
+        execute "silent call system('ln -s ".$LOCALHOME."/vim/.vimrc ".$LOCALHOME."/.vimrc')"
+    elseif has('win32') || has('win64')
+        execute "silent call system('mklink /H ".$LOCALHOME."\\.vimrc ".$LOCALHOME."\\vim\\.vimrc')"
+    endif
+    execute "silent source ".$LOCALHOME."/.vimrc"
     PluginClean!
     PluginInstall
 endfunction
