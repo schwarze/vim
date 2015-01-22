@@ -218,7 +218,8 @@ let g:expand_region_text_objects = {
 
 let g:toggle_list_no_mappings=1
 
-"let g:SuperTabDefaultCompletionType = "context"
+"let g:SuperTabDefaultCompletionType = "<C-x><C-p>"
+let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabLongestEnhanced=1
 
 let g:searchfold_do_maps = 0
@@ -324,7 +325,7 @@ set backspace=indent,eol,start
 set breakat+=\|
 set browsedir=buffer
 set cmdheight=2
-set complete=.,w,b,u,t,i,k,kspell,s
+set complete=.,w,b,u,i
 set completeopt=menu,longest
 set confirm
 set cpo-=<
@@ -528,26 +529,34 @@ vnoremap K :VisualLineBreakAt<CR>
 
 map <leader>c <Plug>NERDComToggleComment
 
-map <silent> <F2> [
-map <silent> <F3> ]
-map! <silent> <F2> [
-map! <silent> <F3> ]
-map <silent> <S-F2> {
-map <silent> <S-F3> }
-map! <silent> <S-F2> {
-map! <silent> <S-F3> }
-map <silent> <C-F2> {
-map <silent> <C-F3> }
-map! <silent> <C-F2> {
-map! <silent> <C-F3> }
-lmap <silent> <F2> [
-lmap <silent> <F3> ]
-lmap <silent> <S-F2> {
-lmap <silent> <S-F3> }
-lmap <silent> <C-F2> {
-lmap <silent> <C-F3> }
+map <F1> [
+map <F2> ]
+map! <F1> [
+map! <F2> ]
+map <F3> {
+map <F4> }
+map! <F3> {
+map! <F4> }
 
-nnoremap <silent> <F11> :Fullscreen<CR>
+map <F5> <
+map <F6> >
+map! <F5> <
+map! <F6> >
+map <F7> (
+map <F8> )
+map! <F7> (
+map! <F8> )
+
+map <F9> <bar>
+map <F10> ~
+map! <F9> <bar>
+map! <F10> ~
+map <F11> /
+map <F12> \
+map! <F11> /
+map! <F12> \
+
+"nnoremap <silent> <F12> :Fullscreen<CR>
 
 nnoremap <silent> <leader><BS> :emenu <C-Z>
 nnoremap <silent> <leader>l :set relativenumber!<CR>
@@ -902,7 +911,7 @@ inoremap <silent> <C-e> <c-o>de
 inoremap <silent> <C-s> <c-o>db
 inoremap <silent> <C-b> <c-o>dB
 
-nmap <silent> <C-p> :call PasteJointCharacterwise(v:register, "P")<CR>
+nmap <silent> <leader><leader>p :call PasteJointCharacterwise(v:register, "P")<CR>
 
 nmap <leader>h :ReSyntax<CR>
 
