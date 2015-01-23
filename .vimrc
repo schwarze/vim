@@ -1168,6 +1168,7 @@ com! -range -nargs=+ -com=command    B  <line1>,<line2>call VisBlockCmd(<q-args>
 com! -range -nargs=* -com=expression S  <line1>,<line2>call VisBlockSearch(<q-args>)
 com! -complete=command SnipEdit :exec 'sp ' . $LOCALHOME . '/.vim/bundle/schwarze-vim-snippets/snippets/' . (&ft==''?'_':&ft) . '.snippets'
 com! -complete=command Update call s:Update()
+com! -complete=command LinkVimRc call s:LinkVimRc()
 com! -complete=command Banner echo 'Fetching banner...' | exec 'silent sp http://ascii-text.com/online-ascii-banner-text-generator/big/' . GetCurrentWord() | exec '%s/^\_.*<pre>\(\_.\{-}\)<\/pre>\_.*$/\1/' | nohlsearch | let save_reg = @z | exec 'norm gg"zyG' | close | exec 'norm diw"zP' | let @z = save_reg
 com! -bang -nargs=* -range LineBreakAt <line1>,<line2>call LineBreakAt('<bang>', <f-args>)
 com! -range -complete=command VisualLineBreakAt :exe("norm <C-u>") | let save_reg = @z | exec 'norm gv"zy' | exec 'LineBreakAt '.@z | let @z = save_reg
@@ -1897,18 +1898,27 @@ function! s:Update()
     execute "cd " . $LOCALHOME . "/vim"
     execute "silent call system('git checkout -- .')"
     execute "silent call system('git pull')"
-    try
-        execute "silent call delete('".$LOCALHOME.".vimrc')"
-    catch
-    endtry
-    if has('gui_macvim')
-        execute "silent call system('ln -s ".$LOCALHOME."/vim/.vimrc ".$LOCALHOME."/.vimrc')"
-    elseif has('win32') || has('win64')
-        execute "silent call system('mklink /H ".$LOCALHOME."\\.vimrc ".$LOCALHOME."\\vim\\.vimrc')"
-    endif
+    call s:LinkVimRc()
     execute "silent source ".$LOCALHOME."/.vimrc"
     PluginClean!
     PluginInstall
+endfunction
+
+function! s:LinkVimRc()
+    if has('gui_macvim')
+        try
+            execute "silent call delete('".$LOCALHOME."/.vimrc')"
+        catch
+        endtry
+        execute "silent call system('ln -s ".$LOCALHOME."/vim/.vimrc ".$LOCALHOME."/.vimrc')"
+    elseif has('win32') || has('win64')
+        let $WINLOCALHOME = substitute($LOCALHOME, "/", "\\", "g")
+        try
+            execute "silent call delete('".$WINLOCALHOME."/.vimrc')"
+        catch
+        endtry
+        execute "silent call system('mklink /H ".$WINLOCALHOME."\\.vimrc ".$WINLOCALHOME."\\vim\\.vimrc')"
+    endif
 endfunction
 
 function! s:SetColors()
@@ -1956,7 +1966,11 @@ function! s:FinalizeStartup()
         echo "Installing package manager via GIT..."
         hi clear NonText
         hi NonText guifg=bg
-        execute "silent call system('git clone https://github.com/gmarik/Vundle.vim.git ".$LOCALHOME."/.vim/bundle/Vundle.vim')"
+        let target=$LOCALHOME."/.vim/bundle/Vundle.vim"
+        if has('win32') || has('win64')
+            let target = substitute(target, "/", "\\", "g")
+        endif
+        execute "silent call system('git clone https://github.com/gmarik/Vundle.vim.git ".target."')"
         call DefinePlugins()
         echo "Installing plugins via Vundle..."
         :PluginInstall
