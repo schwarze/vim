@@ -77,6 +77,9 @@ function! DefinePlugins ()
     Plugin 'rking/ag.vim'
     Plugin 'dietsche/vim-lastplace'
 
+    " Syntax
+    Plugin 'scrooloose/syntastic'
+
     "Utility
     Plugin 'Align'
     Plugin 'SQLUtilities'
@@ -202,6 +205,13 @@ let s:cwhl=0
 let g:swoopUseDefaultKeyMap = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " PLUGINS:
+"Syntax:
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+
 let g:expand_region_text_objects = {
       \ 'iw' :0,
       \ 'iW' :0,
@@ -449,6 +459,10 @@ if g:IsVundleInstalled
 endif
 
 function! DefineMapping()
+    try
+        AlignMapsClean
+    catch
+    endtry
     "***************************************
     " yunk maps
     map €swp <Plug>SaveWinPosn
@@ -585,6 +599,7 @@ function! DefineMapping()
     nmap <silent> <Leader>i <Plug>IndentGuidesToggle
     nnoremap <silent> <S-Space><S-Space>B :Bdelete<CR>
     nnoremap <silent> <leader><RETURN> :update<CR>
+    nnoremap <silent> <S-Space><S-RETURN> :w<CR>:SyntasticCheck<CR>
     nnoremap <silent> <leader>- :NERDTreeToggle<CR>
     nnoremap <silent> <leader>_ :NERDTreeFind<CR>
     nnoremap <silent> <S-Space>_ :NERDTreeFind<CR>
