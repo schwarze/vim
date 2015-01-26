@@ -1969,6 +1969,8 @@ function! s:SetColors()
     hi link Folded CursorLine
     hi clear FoldColumn
     hi link FoldColumn CursorLine
+    hi clear Visual
+    hi link Visual StatusLine
     hi clear User1
     hi link User1 CursorLine
     hi clear User2
