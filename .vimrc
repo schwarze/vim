@@ -210,6 +210,10 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
+let g:syntastic_mode_map = {
+            \ "mode": "passive",
+            \ "active_filetypes": [],
+            \ "passive_filetypes": [] }
 
 
 let g:expand_region_text_objects = {
@@ -1159,7 +1163,7 @@ com! -complete=command Changedir :cd %:p:h|pwd
 com! -complete=command ChangedirToTagsfile :exe('cd '.fnamemodify(tagfiles()[0],':p:h'))|pwd
 com! -complete=command Changedirup :cd ..|pwd
 com! -complete=command Changedirlast :cd -|pwd
-com! -complete=command Cleanup :nohlsearch | echo
+com! -complete=command Cleanup :nohlsearch | execute "SyntasticReset" | echo
 com! -complete=command NewScratchWindow :new |silent! 0f!|set buftype=nofile|set bufhidden=hide|setlocal noswapfile
 com! -complete=command DeleteNoNameBuffers call DelNonameBuf()
 com! -complete=command Clipfile :if has('win32') | let @*=substitute(expand("%:p"), "/", "\\", "g") | else | let @*=expand("%:p") | endif
@@ -1947,7 +1951,8 @@ function! s:SetColors()
     endtry
     hi clear NonText
     hi NonText guifg=bg
-    hi CursorLineNr guifg=White gui=NONE
+    hi clear CursorLineNr
+    hi link CursorLineNr CursorLine
     hi clear IncSearch
     hi link IncSearch StatusLine
     hi clear MatchParen
