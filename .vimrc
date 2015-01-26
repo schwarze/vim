@@ -165,6 +165,7 @@ endfunction
 if has('gui_macvim')
     let macvim_skip_cmd_opt_movement = 1
     set grepprg=grep\ -nR
+    let g:ctrlp_mruf_case_sensitive = 1
 elseif has('win32') || has('win64')
     try
         try
@@ -172,6 +173,7 @@ elseif has('win32') || has('win64')
         catch
         endtry
         set grepprg=findstr\ /N\ /I\ /S
+        let g:ctrlp_mruf_case_sensitive = 0
     catch
     endtry
 endif
@@ -186,6 +188,7 @@ if executable('ag')
 
   " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 1
+  let g:ag_highlight=1
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -235,8 +238,7 @@ let g:expand_region_text_objects = {
 
 let g:toggle_list_no_mappings=1
 
-"let g:SuperTabDefaultCompletionType = "<C-x><C-p>"
-let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabDefaultCompletionType = "<C-x><C-p>"
 let g:SuperTabLongestEnhanced=1
 
 let g:searchfold_do_maps = 0
