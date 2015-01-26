@@ -390,7 +390,7 @@ set ignorecase smartcase
 set incsearch
 set km=startsel
 set laststatus=2
-set nolazyredraw
+set lazyredraw
 "set linespace=0
 set list
 set modelines=0
@@ -398,9 +398,9 @@ set mouse=a
 set mousemodel=extend
 set mouseshape=n:arrow,i:arrow,r:arrow,v:arrow,o:arrow,s:updown,sd:updown,m:no,ml:up-arrow,vs:leftright,vd:leftright
 set noautochdir
-set noautoindent
+set autoindent
 set nobackup writebackup
-set nocindent
+set cindent
 set cursorline
 set nocursorcolumn
 set noerrorbells
@@ -425,7 +425,7 @@ set showbreak=
 set showtabline=0
 set sidescroll=1
 set sidescrolloff=1
-set smartindent
+set nosmartindent
 set smarttab
 set softtabstop=0
 set spelllang=en_us
@@ -450,7 +450,6 @@ set virtualedit=all
 set visualbell
 set wak=no
 set wcm=<C-Z>
-set wildmenu
 set wildmenu
 set wildmode=full
 set wrap
@@ -522,15 +521,15 @@ function! DefineMapping()
 
     "nnoremap <silent> <C-p> :CtrlPMixed<CR>
     " Schlepp
-    vmap <silent> <C-S-up> <Plug>SchleppUp
-    vmap <silent> <C-S-down> <Plug>SchleppDown
-    vmap <silent> <C-S-left> <Plug>SchleppLeft
-    vmap <silent> <C-S-right> <Plug>SchleppRight
-    vmap <silent> <C-s> <Plug>SchleppDup
-    vmap <silent> <C-S-M-up> <Plug>SchleppDupUp
-    vmap <silent> <C-S-M-down> <Plug>SchleppDupDown
-    vmap <silent> <C-S-M-left> <Plug>SchleppDupLeft
-    vmap <silent> <C-S-M-right> <Plug>SchleppDupRight
+    vmap <silent> <S-M-up> <Plug>SchleppUp
+    vmap <silent> <S-M-down> <Plug>SchleppDown
+    vmap <silent> <S-M-left> <Plug>SchleppLeft
+    vmap <silent> <S-M-right> <Plug>SchleppRight
+    vmap <silent> <s> <Plug>SchleppDup
+    vmap <silent> <leader><up> <Plug>SchleppDupUp
+    vmap <silent> <leader><down> <Plug>SchleppDupDown
+    vmap <silent> <leader><left> <Plug>SchleppDupLeft
+    vmap <silent> <leader><right> <Plug>SchleppDupRight
 
     nnoremap <silent> <C-S-Space> :CtrlPMixed<CR>
     nnoremap <silent> <leader>p :CtrlPMenu<CR>
@@ -807,8 +806,8 @@ function! DefineMapping()
     noremap <silent> <BS> `
     onoremap <silent> <BS> `
 
-    map <S-M-right> <Plug>(expand_region_expand)
-    map <S-M-left> <Plug>(expand_region_shrink)
+    vmap <C-right> <Plug>(expand_region_expand)
+    vmap <C-left> <Plug>(expand_region_shrink)
 
     nnoremap <silent> <M-Insert> `[v`]
     vnoremap <silent> <M-Insert> <ESC>`[v`]
