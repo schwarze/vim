@@ -564,6 +564,9 @@ function! DefineMapping()
 
     map <leader>c <Plug>NERDComToggleComment
 
+    map <C-F1> :silent! shell<CR>:echo<CR>
+    imap <C-F1> <ESC>:silent! shell<CR>:echo<CR>
+
     map <F1> [
     map <F2> ]
     map! <F1> [
