@@ -180,13 +180,8 @@ endif
 
 " The Silver Searcher
 if executable('ag')
-  " Use ag over grep
   set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 1
   let g:ag_highlight=1
 endif
@@ -259,9 +254,9 @@ let g:EasyMotion_landing_highlight = 1
 
 " CTRLP
 let g:ctrlp_cache_dir = $LOCALHOME."/.vimtmp/ctrlpcache"
-let g:ctrlp_clear_cache_on_exit = 1
-let g:ctrlp_max_files = 100
-let g:ctrlp_max_depth = 0
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_max_files = 1000
+let g:ctrlp_max_depth = 3
 let g:ctrlp_extensions = ['tag', 'line', 'changes', 'mixed', 'register', 'yankring', 'cmdline']
 let g:ctrlp_cmd = 'CtrlPMixed'
 let g:ctrlp_show_hidden = 1
@@ -362,6 +357,7 @@ let g:HighlightCurrentWordToggled = 0
 let &listchars = "tab:\u00bb ,trail:\u00b7,eol:\u0020,extends:\u0020,precedes:\u0020,nbsp:\u00b7"
 
 set autoread
+set autochdir
 set backspace=indent,eol,start
 set breakat+=\|
 set browsedir=buffer
@@ -525,7 +521,6 @@ function! DefineMapping()
     vmap <silent> <S-M-down> <Plug>SchleppDown
     vmap <silent> <S-M-left> <Plug>SchleppLeft
     vmap <silent> <S-M-right> <Plug>SchleppRight
-    vmap <silent> <s> <Plug>SchleppDup
     vmap <silent> <leader><up> <Plug>SchleppDupUp
     vmap <silent> <leader><down> <Plug>SchleppDupDown
     vmap <silent> <leader><left> <Plug>SchleppDupLeft
@@ -555,7 +550,7 @@ function! DefineMapping()
     vnoremap . :B<SPACE>
 
     nnoremap <silent><leader>v :LAg! "\b<C-R><C-W>\b"<CR>:lw<CR>
-    nnoremap <silent><S-Space>V :LAg! "<C-R><C-W>"<CR>:lw<CR>
+    nnoremap <S-Space>V :LAg!<space>
     vnoremap <silent><leader>v :SearchListGrep<CR>
 
     nnoremap <silent> K :exec "LineBreakAt " . getline('.')[col('.')-1]<CR>
@@ -822,6 +817,8 @@ function! DefineMapping()
     nnoremap <silent> <S-Insert> "*P
     cnoremap <C-S-INS> <c-r>=escape(@0, '.^$/\\')<cr>
 
+    nnoremap <silent> <S-Del> dd
+    inoremap <silent> <S-Del> <C-o>dd
     nnoremap <silent> <M-Del> viwhdl
     inoremap <silent> <M-Del> <ESC>viwhdli
     nnoremap <silent> <C-Del> viwd
