@@ -91,7 +91,7 @@ function! DefinePlugins ()
     Plugin 'zirrostig/vim-schlepp'
     Plugin 'cmdline-completion'
     Plugin 'IndexedSearch'
-    Plugin 'LargeFile'
+    "Plugin 'LargeFile'
     "Plugin 'matchparenpp'
     Plugin 'mbbill/undotree'
     Plugin 'mbriggs/mark.vim'
@@ -141,6 +141,9 @@ function! DefinePlugins ()
 
     " Formatters
     Plugin 'tpope/vim-jdaddy'
+
+    " Language support
+    Plugin 'pangloss/vim-javascript'
 
     " Snippets
     Plugin 'MarcWeber/vim-addon-mw-utils'
@@ -393,10 +396,9 @@ set modelines=0
 set mouse=a
 set mousemodel=extend
 set mouseshape=n:arrow,i:arrow,r:arrow,v:arrow,o:arrow,s:updown,sd:updown,m:no,ml:up-arrow,vs:leftright,vd:leftright
-set noautochdir
 set autoindent
 set nobackup writebackup
-set cindent
+"set cindent
 set cursorline
 set nocursorcolumn
 set noerrorbells
@@ -421,9 +423,9 @@ set showbreak=
 set showtabline=0
 set sidescroll=1
 set sidescrolloff=1
-set nosmartindent
+"set nosmartindent
 set smarttab
-set softtabstop=0
+set softtabstop=4
 set spelllang=en_us
 set splitbelow
 set splitright
@@ -928,6 +930,7 @@ function! DefineMapping()
     nnoremap <silent> <M--> q/i
     nnoremap <silent> <M-.> q:i
     nnoremap <silent> <char-0x221e> q:i
+    nnoremap <silent> <leader>gv `[v`]
     "nnoremap <silent> <C-bs> `z
     "nnoremap <silent> <C-return> mz
     nnoremap <silent> <S-return> `.
@@ -2029,7 +2032,6 @@ if has("autocmd")
         au BufWritePost .snippets call ReloadSnippets(&ft)
         au VIMEnter * call s:FinalizeStartup()
     augroup END
-else
-    set smartindent
 endif
 
+filetype plugin indent on
