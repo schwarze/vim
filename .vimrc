@@ -931,6 +931,7 @@ function! DefineMapping()
     nnoremap <silent> <M-.> q:i
     nnoremap <silent> <char-0x221e> q:i
     nnoremap <silent> <leader>gv `[v`]
+    nnoremap <silent> <leader><del> m`:s/\s*$//g<CR>``:nohlsearch<CR>
     "nnoremap <silent> <C-bs> `z
     "nnoremap <silent> <C-return> mz
     nnoremap <silent> <S-return> `.
