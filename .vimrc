@@ -110,6 +110,7 @@ function! DefinePlugins ()
     Plugin 'textobj-line'
     Plugin 'textobj-syntax'
     Plugin 'textobj-verticalbar'
+    Plugin 'ReplaceWithRegister'
     Plugin 'vim-textobj-quoted'
     Plugin 'The-NERD-Commenter'
     Plugin 'sk1418/Join'
@@ -143,7 +144,7 @@ function! DefinePlugins ()
     Plugin 'tpope/vim-jdaddy'
 
     " Language support
-    Plugin 'pangloss/vim-javascript'
+    "Plugin 'pangloss/vim-javascript'
 
     " Snippets
     Plugin 'MarcWeber/vim-addon-mw-utils'
@@ -246,7 +247,17 @@ let g:SexyScroller_MaxTime = 1
 let g:SexyScroller_CursorTime=0
 let g:SexyScroller_ScrollTime=1
 let g:SexyScroller_EasingStyle = 0
-let g:SexyScroller_DetectPendingKeys = 0
+let g:SexyScroller_DetectPendingKeys = 1
+let g:SexyScroller_MinLines=3
+let g:SexyScroller_MinColumns=200
+
+"let g:SexyScroller_MaxTime = 150
+"let g:SexyScroller_CursorTime=2
+"let g:SexyScroller_ScrollTime=5
+"let g:SexyScroller_EasingStyle=1
+"let g:SexyScroller_DetectPendingKeys=1
+"let g:SexyScroller_MinLines=5
+"let g:SexyScroller_MinColumns=200
 
 " easymotion
 let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyz1234567890'
@@ -398,7 +409,7 @@ set mousemodel=extend
 set mouseshape=n:arrow,i:arrow,r:arrow,v:arrow,o:arrow,s:updown,sd:updown,m:no,ml:up-arrow,vs:leftright,vd:leftright
 set autoindent
 set nobackup writebackup
-"set cindent
+set cindent
 set cursorline
 set nocursorcolumn
 set noerrorbells
@@ -560,6 +571,7 @@ function! DefineMapping()
     vnoremap K :VisualLineBreakAt<CR>
 
     map <leader>c <Plug>NERDComToggleComment
+    nmap <silent> <C-s> ysiw
 
     map <C-F1> :silent! shell<CR>:echo<CR>
     imap <C-F1> <ESC>:silent! shell<CR>:echo<CR>
@@ -944,10 +956,10 @@ function! DefineMapping()
 
     nmap <silent> <C-w><CR> :exe 'resize '.line('$')<CR>
     nmap <silent> <C-w><C-CR> :exe 'resize '.line('$')<CR>
-    inoremap <silent> <C-w> <c-o>dw
-    inoremap <silent> <C-e> <c-o>de
-    inoremap <silent> <C-s> <c-o>db
-    inoremap <silent> <C-b> <c-o>dB
+    "inoremap <silent> <C-w> <c-o>dw
+    "inoremap <silent> <C-e> <c-o>de
+    "inoremap <silent> <C-s> <c-o>db
+    "inoremap <silent> <C-b> <c-o>dB
 
     nmap <silent> <leader><leader>p :call PasteJointCharacterwise(v:register, "P")<CR>
 
@@ -2027,7 +2039,8 @@ if has("autocmd")
         au GUIEnter * set vb t_vb=
         au CmdwinEnter * nnoremap <silent> <Esc> :q<CR>|redraw
         au CmdwinLeave * nunmap <Esc>
-        au BufEnter * set cpoptions+=y fo=qr
+        au BufEnter * set cpoptions+=y fo=qr cino=
+        au BufEnter * set cindent indentexpr=
         au BufNewFile __Scratch__ call s:ScratchMarkBuffer()
         au BufWritePost .vimrc source %
         au BufWritePost .snippets call ReloadSnippets(&ft)
