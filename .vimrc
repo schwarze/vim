@@ -76,6 +76,7 @@ function! DefinePlugins ()
     Plugin 'jistr/vim-nerdtree-tabs'
     Plugin 'rking/ag.vim'
     Plugin 'dietsche/vim-lastplace'
+    Plugin 'gelguy/Cmd2.vim'
 
     " Syntax
     Plugin 'scrooloose/syntastic'
@@ -429,7 +430,7 @@ set printoptions=paper:A4,number:y,syntax:n,duplex:long
 set report=2
 set sessionoptions=buffers,tabpages
 set shiftwidth=4
-set shortmess+=aoOtTIc
+set shortmess+=aoOtTI
 set showbreak=
 set showtabline=0
 set sidescroll=1
@@ -479,6 +480,32 @@ function! DefineMapping()
     endtry
     "***************************************
     " yunk maps
+    let g:Cmd2_cmd_mappings = {
+      \ 'iw': {'command': 'iw', 'type': 'text', 'flags': 'Cpv'},
+      \ 'ap': {'command': 'ap', 'type': 'line', 'flags': 'pv'},
+      \ '^': {'command': '^', 'type': 'normal!', 'flags': 'r'},
+      \ "CF": {'command': function('Cmd2#ext#complete#Main'),
+          \ 'type': 'function'},
+      \ "CB": {'command': function('Cmd2#ext#complete#Main'),
+          \ 'type': 'function'},
+      \ 'w': {'command': 'Cmd2#functions#Cword',
+          \ 'type': 'function', 'flags': 'Cr'},
+      \ }
+
+    let g:Cmd2_options = {
+      \ '_complete_ignorecase': 1,
+      \ '_complete_uniq_ignorecase': 0,
+      \ '_quicksearch_ignorecase': 1,
+      \ '_complete_start_pattern': '\<\(\k\+\(_\|\#\)\)\?',
+      \ '_complete_fuzzy': 1,
+      \ }
+
+    cmap <C-S> <Plug>Cmd2
+    cmap <expr> <Tab> Cmd2#ext#complete#InContext() ?
+        \ "\<Plug>Cmd2CF" : "\<Tab>"
+    cmap <expr> <S-Tab> Cmd2#ext#complete#InContext() ? "
+        \ \<Plug>Cmd2CB" : "\<S-Tab>"
+
     map €swp <Plug>SaveWinPosn
     map €rwp <Plug>RestoreWinPosn
     nmap €mm <Plug>MarkSet
