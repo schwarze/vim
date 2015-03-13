@@ -621,9 +621,12 @@ function! DefineMapping()
     vnoremap / :S<SPACE>
     vnoremap . :B<SPACE>
 
-    nnoremap <silent><leader>v :LAg! "\b<C-R><C-W>\b"<CR>:lw<CR>
+    "nnoremap <silent><leader>v :LAg! "\b<C-R><C-W>\b"<CR>:lw<CR>
     nnoremap <S-Space>V :LAg!<space>
-    vnoremap <silent><leader>v :SearchListGrep<CR>
+    "vnoremap <silent><leader>v :SearchListGrep<CR>
+
+    nnoremap <silent> <leader>v :set opfunc=<SID>AckMotion<CR>g@
+    xnoremap <silent> <leader>v :<C-U>call <SID>AckMotion(visualmode())<CR>
 
     nnoremap <silent> K :exec "LineBreakAt " . getline('.')[col('.')-1]<CR>
     nnoremap <S-Space>K :LineBreakAt<space>
@@ -1910,6 +1913,21 @@ fun! s:VirtcolM1(mark)
 
     return vc
 endfun
+
+function! s:CopyMotionForType(type)
+    if a:type ==# 'v'
+        silent execute "normal! `<" . a:type . "`>y"
+    elseif a:type ==# 'char'
+        silent execute "normal! `[v`]y"
+    endif
+endfunction
+
+function! s:AckMotion(type) abort
+    let reg_save = @@
+    call s:CopyMotionForType(a:type)
+    execute "normal! :Ack! --literal " . shellescape(@@) . "\<cr>"
+    let @@ = reg_save
+endfunction
 
 fun! s:SaveUserSettings()
     let s:keep_lz    = &lz
